@@ -12,20 +12,17 @@ const options = {
     };
 
 
-passport.serializeUser((user, done) =>{    console.log("111"+ user.id); done(null, user._id)    });
+passport.serializeUser((user, done) => done(null, user._id));
 
   // In deserializeUser that key is matched with the in memory array / database or any data resource.
   // The fetched object is attached to the request object as req.user
 passport.deserializeUser((id, done) => {
-   console.log("223" + id)    
-    User.findById(id, user=>{   
-      console.log("123"+user)    
-      return done(null, user)
-    });
-         
+  User.findById(id).then( user=>{      
+    return done(null, user)
+  });         
 });
 
-passport.use('login',new LocalStrategy(options, (req, username, password, done) => {
+passport.use('login', new LocalStrategy(options, (req, username, password, done) => {
   // check to see if the username exists
   User.findOne({ login: username }).then(user=>{
     if (user) {   

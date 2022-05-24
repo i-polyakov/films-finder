@@ -7,7 +7,6 @@ router.use(AuthenticateController.initialize());
 // Store our variables to be persisted across the whole session. Works with app.use(Session) above
 router.use(AuthenticateController.session());
 
-//router.use(http_logs);
 
 router.post( "/login", function(req, res, next) {
   AuthenticateController.authenticate('login', function(err, user, info) {
@@ -20,9 +19,10 @@ router.post( "/login", function(req, res, next) {
     req.logIn(user, function(err) {
       if (err) 
        return next(err); 
-
+      
       return res.json(user);
     });
+    
   })(req, res, next);
   });
 
@@ -64,6 +64,7 @@ router.get("/login", checkAuthenticated, (req, res) => {
     res.render(__dirname + "/../src/ejs/login.ejs");
 });
 
+
 /*router.get("/logOut", (req, res) => {
 	req.logout();
     res.render(__dirname + "/../src/ejs/login.ejs");
@@ -71,7 +72,7 @@ router.get("/login", checkAuthenticated, (req, res) => {
 */
 
 function checkAuthenticated(req, res, next) {
- 
+  
   if (req.isAuthenticated()) 
     return res.redirect("/index");
   

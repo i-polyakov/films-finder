@@ -7,7 +7,7 @@ const bodyParser = require('body-parser');
 
 const AuthRouter=  require("./routes/auth.router");
 const MenuRouter=  require("./routes/MenuRouter");
-const FilmsRouter=  require("./routes/FilmsRouter");
+const FilmsRouter=  require("./routes/films.router");
 const UsersRouter=  require("./routes/UsersRouter");
 
 //const http_logs = require("./db/mongo/http_logs");
@@ -18,6 +18,7 @@ const PORT = process.env.PORT || 8080;
 const app = express();
 
 mongoose.connect('mongodb://localhost/filmsFinderDB').then(()=> console.log('filmsFinderDB connected.'))
+
 
 app.use(require('morgan')('dev'));
 app.use(require('cors')())
