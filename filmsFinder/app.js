@@ -37,13 +37,14 @@ app.use( session({
 app.use(express.static(__dirname ));
 
 
-app.use(function(req, res, next){
-    res.locals.success_messages = req.flash('success_messages');
-    res.locals.error_messages = req.flash('error_messages');
-    res.locals.message = req.flash();
 
-    next();
-});
+// app.use(function(req, res, next){
+//     res.locals.success_messages = req.flash('success_messages');
+//     res.locals.error_messages = req.flash('error_messages');
+//     res.locals.message = req.flash();
+
+//     next();
+// });
 
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -55,11 +56,22 @@ app.use(bodyParser.json())
 //app.use(http_logs);
 app.use('/',AuthRouter);
 app.use('/',MenuRouter);
-app.use('/',FilmsRouter);
-app.use('/',UsersRouter);
+app.use('/:login',FilmsRouter);
+app.use('/:login',UsersRouter);
 
+app.use((error, req, res, next) => {
+  // Установка кода состояния ответа
+  res.status(error.status)
+
+  // Отправка ответа
+  res.json({
+    status: error.status,
+    message: error.message,
+    stack: error.stack
+  })
+})
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
-module.exports =app;
+module.exports = app;

@@ -1,161 +1,65 @@
-
-const User = require("../db/users.js");
-const Film = require("../db/films.js");
-//const Users_films = require("../db/users_films.js");
-//const Sequelize = require("sequelize");
-//const Op = Sequelize.Op
-
-//const postgres_logs = require("../db/mongo/postgres_logs");
+const User = require("../models/user.js");
+const Film = require("../models/film.js");
+const createError = require('http-errors')
+const imdb = require('../services/imdb-api.js')
 
 class FilmsController {
-  async getOrderFilms(req, res) {//order year, limit 20
-   Film.findAll({
-    limit: 20,
-    order:[
-      ['year', 'DESC'],
-    ]
-   }).then(films=>{
-    postgres_logs(req.user.login,"SELECT","films",null);
-      res.json(films);
+  async getFilmById(req, res) { //page
+    try {
+      const film = await Film.findOne({'imd.id': req.params.id})
+      if(film)
+        return res.json(film)
+      imdb.getMovie  
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
-   }).catch(err=>{
-    postgres_logs(req.user.login,"SELECT","films",err);
-    console.log(err);
-        });
- }
  
 //-----------user----------//
-async getFilmsByName(req, res) {  //search
-    let name=req.body.search;
-    if(!name)
-      return  res.json({messages: "Пустой запрос!"});
-    Film.findAll({
-      where:{
-        name:{
-          [Op.substring]: name
-        }
-      }
-    }).then(films=>{
-      postgres_logs(req.user.login,"SELECT","films",null);
-      if(films.length>0)
-        res.json( films);
-    else
-        res.json({messages: "Фильм не найден!"});
-    }).catch(err=>{
-      postgres_logs(req.user.login,"SELECT","films",err);
-      console.log(err);
-          });
+  async getFilmsByTitle(req, res) {  //search
+      const title = req.body.search;
     
+      if(!title)
+        return res.json({messages: "Пустой запрос!"});
 
-}
+      try {
+        const movies = await imdb.searchMovie(title);
+        return res.json(movies)
+      } catch (error) {
+        console.log(error)
+      }       
+  }
  
-async watchFilms(req, res) {
-    User.findOne({
-      where:{
-        id:req.user.id
-      }, 
-      include: [
-        { model: Film,         
-          through: { 
-            attributes: ['status'] , 
-            where:{
-              status:'false'
-            }
-          }
-        }
-      ]
-     
-    })
-    .then(user=>{
-      postgres_logs(req.user.login,"SELECT","users",null);
-      if(user.films.length>0)
-       res.json( user.films);
-      else
-       res.json({messages: "Список пока пуст"});
-    }).catch(err=>{
-      postgres_logs(req.user.login,"SELECT","films",err);
-      console.log(err);
-    });
+  async wantFilms(req, res) {
+    try {
+      const user = await User.findOne({ login: req.params.login })
+      return res.json(user.want)
+    } catch (error) {
+      console.log(error);
+    }  
+  }
 
+  async watchedFilms(req, res) {
+    try {
+      const user = await User.findOne({ login: req.params.login })
+      return res.json(user.watched)
+    } catch (error) {
+      console.log(error);
+    }  
+  }
 
-
-
-}
-async ViewedFilms(req, res) {
-    User.findOne({
-      where:{
-        id:req.user.id
-      }, 
-      include: [
-        { model: Film,         
-          through: { 
-            attributes: ['status'] , 
-            where:{
-              status:'true'
-            }
-          }
-        }
-      ]
-     
-    })
-    .then(user=>{
-      postgres_logs(req.user.login,"SELECT","users",null);
-      if(user.films.length>0)
-       res.json( user.films);
-      else
-       res.json({messages: "Список пока пуст"});
-    }).catch(err=>{
-      postgres_logs(req.user.login,"SELECT","users",null);
-      console.log(err);
-    });
-
-
-}
-
-async watchFilm(req, res) {
-  Film.findByPk(req.body.film.id).then(film=>{
-    postgres_logs(req.user.login,"SELECT","films",null);
-    if(film)
-  Users_films.findOne({
-    where:{ 
-      user_id:req.user.id,
-      film_id:req.body.film.id
-      
-    }
-  }).then(users_films=>{
-    postgres_logs(req.user.login,"SELECT","users_films",null);
-    if(!users_films){
-     
-      Users_films.create({
-        user_id:req.user.id,
-        film_id:req.body.film.id,
-        status:false
-
-      }).then(users_films=>{
-        postgres_logs(req.user.login,"INSERT","users_films",users_films);
-        res.json(users_films )});
-    }
-    else
-    {
-      users_films.update({status:false}).then(users_films=>{
-        postgres_logs(req.user.login,"UPDATE","users_films",users_films);
-        res.json(users_films )});
-    }
-  });
-  else
-  res.status(404).json({
-            "error_messages":" Фильм не найден!"
-         });
-        })
-  .catch(err=>{
-    postgres_logs(req.user.login,"SELECT","users",err);
-    console.log(err);
-  });
-
-
-}
+  async wantFilm(req, res) {
+    try {
+      const user = await User.findByIdAndUpdate(req.user.id, {$push: req.body},{new: true})
+      console.log(req.user)
+      return res.json(user)
+    } catch (error) {
+      console.log(error);
+    }  
+  }
 async unwatchFilm(req, res) {
-
+  deleteOne
   Users_films.destroy({                                                                                                                                                     
     where:{ 
       user_id:req.user.id,
