@@ -26,7 +26,7 @@ const userSchema = new Schema({
         ref:'Film'  
     }],
     watched:[{
-        film:{
+        filmId:{
             type: Schema.Types.ObjectId,
             ref:'Film'
         },

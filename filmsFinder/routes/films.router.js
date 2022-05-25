@@ -3,24 +3,24 @@ const router = new Router();
 const FilmsController = require("../controllers/films.controller");
 
 //-----------user----------//
-router.get("/film/:id", checkNotAuthenticated, FilmsController.getFilmById)//Возвращает фильм по imd id
-router.post("/film", checkNotAuthenticated, FilmsController.getFilmsByTitle)//Возвращает фильм по названию
+router.get("/film/:id", isAuthenticated, FilmsController.getFilmById)//Возвращает фильм по imd id
+router.post("/film", isAuthenticated, FilmsController.getFilmsByTitle)//Возвращает фильм по названию
 //router.get("/films", checkNotAuthenticated, FilmsController.getOrderFilms);//
 
-router.get("/want", checkNotAuthenticated, FilmsController.wantFilms);//Фильмы которые юзер хочет посмотреть
-router.get("/watched", checkNotAuthenticated, FilmsController.watchedFilms);//Фильмы которые юзер посмотрел
+router.get("/:login/want", isAuthenticated, FilmsController.getWantFilms);//Фильмы которые юзер хочет посмотреть
+router.get("/:login/watched", isAuthenticated, FilmsController.getWatchedFilms);//Фильмы которые юзер посмотрел
 
-router.post("/want", checkNotAuthenticated, FilmsController.wantFilm);//Добавить фильм в список посмотрю
-router.delete("/want", checkNotAuthenticated, FilmsController.unwatchFilm);//удалить из списка
+router.post("/want", isAuthenticated, FilmsController.addWantFilm);//Добавить фильм в список посмотрю
+router.delete("/want/:id", isAuthenticated, FilmsController.delWantFilm);//удалить из списка
 
-router.post("/viewedFilm", checkNotAuthenticated, FilmsController.viewedFilm);//Добавить фильм в список просмотренно
-router.delete("/unviewedFilm", checkNotAuthenticated, FilmsController.unviewedFilm);//удалить из списка
+router.post("/watched", isAuthenticated, FilmsController.addWatchedFilm);//Добавить фильм в список просмотренно
+router.delete("/watched/:id", isAuthenticated, FilmsController.delWatchedFilm);//удалить из списка
 
 //-----------moder----------//
 
-router.post("/addFilm", check, FilmsController.addFilm);//добавить фильм  
-router.put("/updateFilm/:id", check, FilmsController.updateFilm);//обновить фильм  
-router.delete("/deleteFilm/:id", check, FilmsController.deleteFilm);//удалить фильм  
+// router.post("/addFilm", check, FilmsController.addFilm);//добавить фильм  
+// router.put("/updateFilm/:id", check, FilmsController.updateFilm);//обновить фильм  
+// router.delete("/deleteFilm/:id", check, FilmsController.deleteFilm);//удалить фильм  
 
 
 
@@ -32,10 +32,10 @@ router.delete("/deleteFilm/:id", check, FilmsController.deleteFilm);//удали
 //router.post("/checkStatusFilm", checkNotAuthenticated, FilmsController.checkStatusFilm);
 //router.post("/changeStatusFilm", checkNotAuthenticated, FilmsController.changeStatusFilm);
 
-function checkNotAuthenticated(req, res, next) {
+function isAuthenticated(req, res, next) {
   if (req.isAuthenticated()) 
     return next();
-  res.json("User not logged!")   
+    res.status(401).json("User not logged!")   
 }
 
 function check(req, res, next) {
@@ -48,7 +48,7 @@ function check(req, res, next) {
     return next();
   } 
   
-  res.json("User not logged!")   
+  res.status(401).json("User not logged!")   
  
 }
 

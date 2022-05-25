@@ -6,16 +6,20 @@ const imdb = require('../services/imdb-api.js')
 class FilmsController {
   async getFilmById(req, res) { //page
     try {
-      const film = await Film.findOne({'imd.id': req.params.id})
+      const film = await Film.findOne({'imdb.id': req.params.id})
       if(film)
         return res.json(film)
-      imdb.getMovie  
+      
+      const response = await imdb.getMovie(req.params.id) 
+      if(response.errorMessage)
+        return res.json({messages: response.errorMessage});
+      
+      return res.json(response.save()) 
     } catch (error) {
       console.log(error)
     }
   }
 
- 
 //-----------user----------//
   async getFilmsByTitle(req, res) {  //search
       const title = req.body.search;
@@ -31,7 +35,7 @@ class FilmsController {
       }       
   }
  
-  async wantFilms(req, res) {
+  async getWantFilms(req, res) {
     try {
       const user = await User.findOne({ login: req.params.login })
       return res.json(user.want)
@@ -40,7 +44,7 @@ class FilmsController {
     }  
   }
 
-  async watchedFilms(req, res) {
+  async getWatchedFilms(req, res) {
     try {
       const user = await User.findOne({ login: req.params.login })
       return res.json(user.watched)
@@ -49,186 +53,60 @@ class FilmsController {
     }  
   }
 
-  async wantFilm(req, res) {
+  async addWantFilm(req, res) {
     try {
-      const user = await User.findByIdAndUpdate(req.user.id, {$push: req.body},{new: true})
-      console.log(req.user)
+      await User.findByIdAndUpdate(req.user.id, {
+        $pull: {watched:{filmId: req.body.want}}
+      }, { safe: true, multi:true })
+      
+      const user = await User.findByIdAndUpdate(req.user.id, {$addToSet: req.body},{new: true})
       return res.json(user)
     } catch (error) {
       console.log(error);
     }  
   }
-async unwatchFilm(req, res) {
-  deleteOne
-  Users_films.destroy({                                                                                                                                                     
-    where:{ 
-      user_id:req.user.id,
-      film_id:req.body.film.id,
-      status:false
+
+  async delWantFilm(req, res) {
+    try {
+      const user = await User.findByIdAndUpdate(req.user.id, {$pull: {want: req.params.id}},{new: true})
+      return res.json(user)
+    } catch (error) {
+      console.log(error);
+    }  
+  }
+
+  async addWatchedFilm(req, res) {
+    try {
+      const response = await User.findOne({id: req.user.id, 'watched.filmId': req.body.watched.filmId})
+      if(response)
+        return res.json(response)
+
+      // const inWant = await User.findById(req.user.id, {'want': req.body.watched.id})
+      // if(!inWant)
+      //   return res.json( await User.findByIdAndUpdate(req.user.id, {$addToSet: req.body},{new: true}))
       
-    }
-  }).then(row=>{
-    postgres_logs(req.user.login,"DELETE","users_films",null);
-        res.json({
-          "rows_deleted":row
-         });
-  
-  }).catch(err=>{
-    
-    postgres_logs(req.user.login,"DELETE","users_films",err);
-      console.log(err);
-          });
-
-
-}
-
-async viewedFilm(req, res) {
-
-  Film.findByPk(req.body.film.id).then(film=>{
-    postgres_logs(req.user.login,"SELECT","films",null);
-    if(film)
-    Users_films.findOne({
-      where:{ 
-        user_id:req.user.id,
-        film_id:req.body.film.id
-        
-      }
-    }).then(users_films=>{
-      postgres_logs(req.user.login,"SELECT","user_films",null);
-      if(!users_films){
+      const user = await User.findByIdAndUpdate(req.user.id, {
+        $pull: {want: req.body.watched.filmId},
+        $addToSet: req.body
+      },{new: true})
+      return res.json(user)    
       
-        Users_films.create({
-          user_id:req.user.id,
-          film_id:req.body.film.id,
-          status:true
-
-        }).then(users_films=>{
-          postgres_logs(req.user.login,"INSERT","user_films",users_films);
-          res.json(users_films )});
-      }
-      else
-      {
-        users_films.update({status:true}).then(users_films=>{
-          postgres_logs(req.user.login,"UPDATE","user_films",users_films);
-          res.json(users_films )});
-      }
-    });
-    else
-    res.status(404).json({
-              "error_messages":" Фильм не найден!"
-           });
-  }) .catch(err=>{
-    postgres_logs(req.user.login,"SELECT","user_films",err);
-    console.log(err);
-        });
-}
-async unviewedFilm(req, res) {
-  Users_films.destroy({                                                                                                                                                     
-    where:{ 
-      user_id:req.user.id,
-      film_id:req.body.film.id,
-      status:true
-      
-    }
-  }).then(row=>{
-    postgres_logs(req.user.login,"DELETE","user_films",null);
-        res.json({
-          "rows_deleted":row
-         });
+    } catch (error) {
+      console.log(error);
+    }  
+  }
+  async delWatchedFilm(req, res) {
+    try {
+      const user = await User.findByIdAndUpdate(req.user.id, {
+        $pull: {watched:{filmId: req.params.id}}
+      }, { safe: true, multi:true, new: true })
+      return res.json(user)
+    } catch (error) {
+      console.log(error);
+    }  
+  }
   
-  }).catch(err=>{
-      console.log(err);
-          });
-
-}
-//-----------moder----------//
-async addFilm(req, res) {//moder
-
-  Film.findOrCreate({where:{ 
-      "name": req.body.film.name,
-      "year": req.body.film.year,
-      "genre": req.body.film.genre,
-      "director": req.body.film.director,
-      "country": req.body.film.country,
-      "poster": req.body.film.poster,
-      "description": req.body.film.description
-
-
-    }}).then((result)=>{
-      var created=result[1];
-      var film=result[0];
-      console.log(film);
-    if(created){
-      postgres_logs(req.user.login,"INSERT","films",film);
-      res.json({
-        "messages":"Фильм добавлен в бд!"
-  
-      ,"film":film.dataValues});
-      
-    }
-    else
-    {
-      postgres_logs(req.user.login,"SELECT","films",null);
-        res.json({
-          "messages":" Фильм уже был добавлен!"
-        } );
-    }
-  }).catch(err=>{
-    postgres_logs(req.user.login,"SELECT","films",err);
-      console.log(err);
-          });
-        
-}
-async updateFilm(req, res) {//moder
-  
-  Film.findOne({
-    where:{ 
-    id:req.params.id     
-    }
-  }).then(film=>{
-    postgres_logs(req.user.login,"SELECT","films",null);
-    if(!film){
-      res.status(404).json({
-        "error_messages":"Не нашел фильм!"
-  
-      });
-      
-    }
-    else
-    {
-      film.update(req.body.film).then(film=>{
-        postgres_logs(req.user.login,"UPDATE","films",film);
-        res.json({
-          "messages":" Фильм обновлен!"
-        } )});
-    }
-  }).catch(err=>{
-    postgres_logs(req.user.login,"SELECT","films",err);
-      console.log(err);
-          });
-        
-}
-async deleteFilm(req, res) {//moder
- 
-  Film.destroy({                                                                                                                                                     
-    where:{ 
-      id:req.params.id     
-      }
-  }).then(row=>{
-    postgres_logs(req.user.login,"DELETE","films",null);
-        res.json({
-          "rows_deleted":row
-         });
-  
-  }).catch(err=>{
-    postgres_logs(req.user.login,"DELETE","films",err);
-      console.log(err);
-          });
-        
-}
-
 //-----------admin----------//
-
   async upRating(req, res) {
 
     let film_id=req.body.film_id;

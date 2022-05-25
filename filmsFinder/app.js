@@ -5,10 +5,10 @@ const session = require("express-session");
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 
-const AuthRouter=  require("./routes/auth.router");
-const MenuRouter=  require("./routes/MenuRouter");
-const FilmsRouter=  require("./routes/films.router");
-const UsersRouter=  require("./routes/UsersRouter");
+const AuthRouter = require("./routes/auth.router");
+const MenuRouter = require("./routes/MenuRouter");
+const FilmsRouter = require("./routes/films.router");
+const UsersRouter = require("./routes/UsersRouter");
 
 //const http_logs = require("./db/mongo/http_logs");
 require("dotenv").config();
@@ -56,8 +56,8 @@ app.use(bodyParser.json())
 //app.use(http_logs);
 app.use('/',AuthRouter);
 app.use('/',MenuRouter);
-app.use('/:login',FilmsRouter);
-app.use('/:login',UsersRouter);
+app.use('/',FilmsRouter);
+app.use('/',UsersRouter);
 
 app.use((error, req, res, next) => {
   // Установка кода состояния ответа

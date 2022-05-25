@@ -14,9 +14,9 @@ module.exports.searchMovie = async function(title, res){
 module.exports.getMovie = async function(id, res){
     try {      
         const response = await axios.get(encodeURI(baseUrl+'Title/'+apiKey+'/'+id)) 
-        
+        console.log(response.data)
         if(response.data.errorMessage)
-            return null   
+            return {errorMessage: response.data.errorMessage}
 
         const film = new Film({
             title: response.data.title,
@@ -29,7 +29,7 @@ module.exports.getMovie = async function(id, res){
             writers: Array.from(response.data.writerList, (writer) => { return writer.name}),
             actors: Array.from(response.data.actorList, (actor) => { return actor.name}),
             genres: Array.from(response.data.genreList, (genre) => { return genre.value}),
-            countries: Array.from(response.data.countriesList, (country) => { return country.value.split(' ').map(s => s.charAt(0).toUpperCase() + s.slice(1).toLowerCase()).join(' ');}),
+            countries: Array.from(response.data.countryList, (country) => { return country.value.split(' ').map(s => s.charAt(0).toUpperCase() + s.slice(1).toLowerCase()).join(' ');}),
             imdb:{
                 rating: response.data.imDbRating,
                 votes: Number(response.data.imDbRatingVotes),
@@ -38,6 +38,7 @@ module.exports.getMovie = async function(id, res){
             contentRating: response.data.contentRating,
             metacriticRating: Number(response.data.metacriticRating)
         });
+        console.log(film)
         return film
     } catch (error) {
         console.log(error)
