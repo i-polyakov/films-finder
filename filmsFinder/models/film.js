@@ -9,7 +9,7 @@ const filmSchema = new Schema({
     plot: String,
     directors:[String],
     writers:[String],
-    actor:[String],
+    actors:[String],
     genres:[String],
     countries:[String],
     imdb:{
