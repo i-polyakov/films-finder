@@ -9,7 +9,7 @@ const AuthRouter = require("./routes/auth.router");
 const MenuRouter = require("./routes/MenuRouter");
 const FilmsRouter = require("./routes/films.router");
 const UsersRouter = require("./routes/users.router");
-
+const HomeRouter = require("./routes/home.router");
 //const http_logs = require("./db/mongo/http_logs");
 require("dotenv").config();
   
