@@ -38,7 +38,9 @@ class FilmsController {
   async getWantFilms(req, res) {
     try {
       const user = await User.findOne({ login: req.params.login })
+      if(user)
       return res.json(user.want)
+    return res.json({messages: 'user not found!'})  
     } catch (error) {
       console.log(error);
     }  
@@ -47,7 +49,9 @@ class FilmsController {
   async getWatchedFilms(req, res) {
     try {
       const user = await User.findOne({ login: req.params.login })
-      return res.json(user.watched)
+      if(user)
+        return res.json(user.watched)
+      return res.json({messages: 'user not found!'})  
     } catch (error) {
       console.log(error);
     }  
