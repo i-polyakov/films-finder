@@ -58,6 +58,7 @@ app.use('/',AuthRouter);
 app.use('/',MenuRouter);
 app.use('/',FilmsRouter);
 app.use('/',UsersRouter);
+app.use('/',HomeRouter);
 
 app.use((error, req, res, next) => {
   // Установка кода состояния ответа

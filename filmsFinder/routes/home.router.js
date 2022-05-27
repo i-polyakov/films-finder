@@ -10,3 +10,5 @@ function isAuthenticated(req, res, next) {
       return next();
       res.status(401).json("User not logged!")   
   }
+
+module.exports = router;
