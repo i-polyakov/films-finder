@@ -8,7 +8,8 @@ router.use(AuthenticateController.initialize());
 router.use(AuthenticateController.session());
 
 
-router.post( "/login", function(req, res, next) {
+router.post( "/api/auth/login", function(req, res, next) {
+  console.log(req.body)
   AuthenticateController.authenticate('login', function(err, user, info) {
     if (err) 
       return next(err); 
@@ -27,14 +28,14 @@ router.post( "/login", function(req, res, next) {
   });
 
 
-router.post( "/register", function(req, res, next) {
-  AuthenticateController.authenticate('register', function(err, user, info) {
+router.post( "/api/auth/registration", function(req, res, next) {
+  AuthenticateController.authenticate('registration', function(err, user, info) {
     if (err) 
      return next(err); 
 
     if (!user){
       console.log(req.session.flash);
-      return res.status(409).json(req.session.flash); 
+      return res.status(400).json(req.session.flash); 
     }
    
     req.logIn(user, function(err) {
@@ -46,20 +47,20 @@ router.post( "/register", function(req, res, next) {
   })(req, res, next);
   });
 
-  router.get("/logOut", (req, res) => {
+  router.get("/api/auth/logOut", (req, res) => {
     req.logout();
     res.json("User logged out")     
   });
   
-router.get("/register", checkAuthenticated, (req, res) => {
+router.get("/api/auth/registration", checkAuthenticated, (req, res) => {
     res.render(__dirname + "/../src/ejs/register.ejs");
 });
 
-router.get("/", checkAuthenticated, (req, res) => {
+router.get("/api/auth/", checkAuthenticated, (req, res) => {
     res.render(__dirname + "/../src/ejs/login.ejs");
 });
 
-router.get("/login", checkAuthenticated, (req, res) => {
+router.get("/api/auth/login", checkAuthenticated, (req, res) => {
   
     res.render(__dirname + "/../src/ejs/login.ejs");
 });
@@ -74,7 +75,7 @@ router.get("/login", checkAuthenticated, (req, res) => {
 function checkAuthenticated(req, res, next) {
   
   if (req.isAuthenticated()) 
-    return res.redirect("/index");
+    return res.redirect("/api/auth/");
   
   next();
 }

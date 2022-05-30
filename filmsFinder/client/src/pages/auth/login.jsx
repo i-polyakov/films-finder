@@ -1,16 +1,17 @@
-import React from 'react';
+import React, {useState, memo}  from 'react';
 import Header from './header.jsx'
 import {BrowserRouter, Route, Link, Routes} from 'react-router-dom'
-const Login = () => {
+const Login = React.memo(({changeHandler, loginHandler}) => {
+  
     return (     
         <div>
             <Header/>  
             <div className="wrap">
-                <form className="form form-login">                             
-                    <input className="validate" name="login" type="text" placeholder="  Логин"/>
-                    <input className="validate" name="password" required="required" type="password" placeholder="  Пароль" /> 
+                <form className="form form-login " onSubmit = {e=>e.preventDefault()}>                             
+                    <input className="validate" name="login" type="text" onChange={changeHandler} placeholder="  Логин"/>
+                    <input className="validate" name="password" required="required" type="password" onChange={changeHandler} placeholder="  Пароль" /> 
                     <div className="row">
-                        <button className="wawes-effect wawes-light btn">Войти</button>
+                        <button className="wawes-effect wawes-light btn" onClick={loginHandler}>Войти</button>
                         <Link className="btn-outline btn-reg" to="/registration">Нет аккаунта?</Link>
                     </div>
                 </form>
@@ -18,6 +19,6 @@ const Login = () => {
         </div>  
        
     );
-}
+});
 
 export default Login;

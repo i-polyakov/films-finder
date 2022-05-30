@@ -19,7 +19,6 @@ const app = express();
 
 mongoose.connect('mongodb://localhost/filmsFinderDB').then(()=> console.log('filmsFinderDB connected.'))
 
-
 app.use(require('morgan')('dev'));
 app.use(require('cors')())
 app.use(cookieParser('secret'));

@@ -6,7 +6,7 @@ const User = require("../models/user.js");
 
 const options = {
         // by default, local strategy uses username
-        usernameField : 'username',
+        usernameField : 'login',
         passwordField : 'password',
         passReqToCallback : true
     };
@@ -22,9 +22,10 @@ passport.deserializeUser((id, done) => {
   });         
 });
 
-passport.use('login', new LocalStrategy(options, (req, username, password, done) => {
+passport.use('login', new LocalStrategy(options, (req, login, password, done) => {
+  console.log(req.body)
   // check to see if the username exists
-  User.findOne({ login: username }).then(user=>{
+  User.findOne({ login: login }).then(user=>{
     if (user) {   
       bcrypt.compare(password, user.password, (err, result) => {
         if (err) 
@@ -42,10 +43,11 @@ passport.use('login', new LocalStrategy(options, (req, username, password, done)
 }));
 
 
-passport.use('register',new LocalStrategy(options, (req, username, password, done) => {
+passport.use('registration',new LocalStrategy(options, (req, login, password, done) => {
+  console.log(req.body)
   let password_confirm = req.body.password_confirm;
   
-  if (!username  || !password || !password_confirm) 
+  if (!login  || !password || !password_confirm) 
     return done(null, false, req.flash( 'error_messages', 'Заполните все поля!') );
   
   if (password.length < 5) 
@@ -56,12 +58,12 @@ passport.use('register',new LocalStrategy(options, (req, username, password, don
      
   hashPassword(password).then( (hashedPassword) => {
     // Validation passed
-    User.findOne({login: username }).then(user=>{
+    User.findOne({login: login }).then(user=>{
       if (user) 
         return done(null, false,req.flash( 'error_messages', 'Логин занят!!' ));         
       else{
         const user = new User({
-          login: username,
+          login: login,
           password: hashedPassword
         });
         user.save();
