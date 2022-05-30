@@ -1,0 +1,49 @@
+@use '../../colors/colors.scss';
+
+.navbar{
+    background: colors.$color-header;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+.logo{
+  display: block;
+	margin:  0 15% 0 20px;
+  //vertical-align: middle;
+	}
+
+body .input-field{
+  font-size: 14px;
+  height: 80%;
+  width: 50%;
+  form{
+    background-color: colors.$color-search;
+    display: flex;
+    input{
+
+      border: none;
+      outline: none;
+      color:  colors.$color-text;
+    } 
+    input:focus{  
+      color:  colors.$color-blue  !important;
+      background-color:  colors.$color-search  !important;
+    }  
+  }
+
+  
+
+  button{
+    background: colors.$color-text;
+    border: none;
+    color:  colors.$color-text;
+  }
+}
+
+form button:hover{
+  transition: all 260ms ease-out;
+    background-color:  colors.$color-blue;
+   
+}
+
