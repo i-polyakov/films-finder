@@ -1,16 +1,29 @@
 import React from 'react';
-import {useSearchParams, Route, Navigate, Routes} from 'react-router-dom'
+import {useSearchParams, Route, Navigate, Routes, useLocation} from 'react-router-dom'
+import Container from './components/container/container';
+import Navbar from './components/navbar/navbar';
+import Sidebar from './components/sidebar/sidebar';
+import FilmContextProvider from './context/film.context';
 import AuthPage from './pages/auth/auth.page';
 import MainPage from './pages/main/main.page';
 
 
 export const useRoutes = (isLogin, user) => {
+   
+    const url = `/${user? user.login:''}`
+    
     if(isLogin){
         return (
-            <Routes>
-                <Route path={"/"+user.login+"/*"} element={<MainPage user={user}/>}/>
-                <Route path="*" element={<Navigate to={"/"+user.login+"/main"} replace />}/>
-            </Routes>
+            <FilmContextProvider>
+                <Navbar/>
+                <Sidebar user={user}/>
+                <Routes> 
+                    <Route path='*' element={<Navigate to={url+"/want"} replace />}/>
+                    <Route path={url+"/main"} element={<MainPage user={user}/>}/>
+                    <Route path={url+"/want"} element={<Container user={user}/>}/>
+                </Routes>
+            </FilmContextProvider>
+           
         );
     }
     return (

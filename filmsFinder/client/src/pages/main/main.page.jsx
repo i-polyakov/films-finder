@@ -7,8 +7,6 @@ import Want from '../../components/want/want.jsx';
 const MainPage = (user) => {
     return (
         <div>
-            <Navbar/>
-            <Sidebar user={user}/>
             <Routes>   
                 <React.Fragment>                    
                     <Route path="/want" element={<Want />} />                                                  

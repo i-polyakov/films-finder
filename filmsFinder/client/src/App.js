@@ -12,6 +12,7 @@ function App() {
   const {login, logout, session, user, isReady} = useAuth()
   const isLogin = !!session
   const routes = useRoutes(isLogin, user)
+  
   return (
     <AuthContext.Provider value={{login, logout, session, user, isReady, isLogin}}>
       <BrowserRouter>
