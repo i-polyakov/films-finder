@@ -55,7 +55,7 @@ app.use(bodyParser.json())
 //app.use(http_logs);
 app.use('/',AuthRouter);
 app.use('/',MenuRouter);
-app.use('/',FilmsRouter);
+app.use('/api/films/',FilmsRouter);
 app.use('/',UsersRouter);
 app.use('/',HomeRouter);
 
