@@ -9,19 +9,18 @@ router.use(AuthenticateController.session());
 
 
 router.post( "/api/auth/login", function(req, res, next) {
-  console.log(req.body)
   AuthenticateController.authenticate('login', function(err, user, info) {
     if (err) 
       return next(err); 
 
     if (!user)  
       return res.status(401).json(req.session.flash); 
-    
+      
     req.logIn(user, function(err) {
       if (err) 
        return next(err); 
       
-      return res.json(user);
+       return res.json({ session: req.session, user});
     });
     
   })(req, res, next);
