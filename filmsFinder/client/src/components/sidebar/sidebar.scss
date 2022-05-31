@@ -1,0 +1,55 @@
+@use '../../colors/colors.scss';
+.wrapp{
+  display: block;
+  position: relative;
+  max-width: 200px;
+  margin: none !important;
+  border: none;
+  border-radius: none;
+  overflow: none;
+
+}
+//----side_bar---------------->
+.side_bar{
+    position: sticky;
+    min-width: 200px;
+    background-color: colors.$color-sb;
+    height: 100%;
+    font-size: 20px;
+    float: left;
+	ul{
+
+	    list-style-type: none;
+	    margin: 0px;
+	    padding: 0px; 
+
+	}
+	li{	
+		display: flex;
+		align-items: center;
+    //padding-left: 6px;
+	}
+	a{
+    text-align: left;
+		display: flex;
+    width: 100%;  
+	    padding: 25px 20px;
+	     text-decoration: none; 
+	     color: colors.$color-text;
+	}
+ img{
+    margin-right: 15px;
+    filter:brightness(100);
+   // fill: red;
+
+	 }
+}
+
+.side_bar ul :hover{
+  img{
+    filter:brightness(1);
+   }
+    
+    color: colors.$color-blue;
+    background-color:colors.$color-search;
+}
