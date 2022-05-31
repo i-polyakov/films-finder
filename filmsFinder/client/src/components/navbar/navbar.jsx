@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { AuthContext } from '../../context/auth.context';
 import './navbar.scss'
 
 const Navbar = () => {
+    const {islogin, logout} = useContext(AuthContext)
     return (
         <div className="navbar-fixed">
             <nav>
@@ -18,9 +20,8 @@ const Navbar = () => {
                         </form>
 				    </div>
                 
-                    <ul className="right hide-on-med-and-down">
-                        <li><a href="sass.html">Sass</a></li>
-                        <li><a href="badges.html">Components</a></li>
+                    <ul className="right hide-on-med-and-down">                  
+                        <li><a href="/" onClick={logout}>Выйти</a></li>
                     </ul>
                 </div>
             </nav>

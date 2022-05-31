@@ -40,10 +40,17 @@ body .input-field{
     color:  colors.$color-text;
   }
 }
-
 form button:hover{
   transition: all 260ms ease-out;
     background-color:  colors.$color-blue;
    
+}
+li:hover{
+  a{
+    color: colors.$color-blue;
+    transition: all 260ms ease-out;
+  }
+  background: colors.$color-search;
+  transition: all 260ms ease-out;
 }
 
