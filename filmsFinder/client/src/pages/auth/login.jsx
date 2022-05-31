@@ -12,7 +12,7 @@ const Login = React.memo(({changeHandler, loginHandler}) => {
                     <input className="validate" name="password" required="required" type="password" onChange={changeHandler} placeholder="  Пароль" /> 
                     <div className="row">
                         <button className="wawes-effect wawes-light btn" onClick={loginHandler}>Войти</button>
-                        <Link className="btn-outline btn-reg" to="/registration">Нет аккаунта?</Link>
+                        <Link className="btn-outline btn-reg" to="/auth/registration">Нет аккаунта?</Link>
                     </div>
                 </form>
             </div>      

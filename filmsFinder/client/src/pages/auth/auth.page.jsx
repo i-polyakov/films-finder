@@ -1,17 +1,20 @@
-import React, {useState } from 'react';
-import {BrowserRouter, Route, Link, Routes} from 'react-router-dom'
+import React, {useState, useContext } from 'react';
+import {Outlet, Route, Link, Routes} from 'react-router-dom'
 import Login  from './login.jsx'
 import Registration  from './registration.jsx'
-import Header from './header.jsx'
 import  './auth.page.scss'
 import axios from 'axios';
+import { AuthContext } from '../../context/auth.context.jsx';
+//axios.defaults.withCredentials = true
 
-const Auth = () => {
+const AuthPage = () => {
     const [form,setForm] = useState({
         login:"",
         password:""
     })
-    const  changeHandler = (event)=>{
+
+    const {login} = useContext(AuthContext)
+    const changeHandler = (event)=>{
         setForm({...form,[event.target.name]: event.target.value})
         console.log(form)
     }
@@ -35,6 +38,8 @@ const Auth = () => {
                 }
            })
            console.log(response)
+           login(response.data.session, response.data.user)
+           
         } catch (error) {
             console.log(error)
         }
@@ -43,14 +48,14 @@ const Auth = () => {
         <div className="container">
             <div className="wrapper">
                 <Routes>   
-                    <React.Fragment>              
-                        <Route path="/login"  element={<Login loginHandler={loginHandler} changeHandler={changeHandler}/>} />   
+                    <React.Fragment>                    
+                        <Route path="/login" element={<Login loginHandler={loginHandler} changeHandler={changeHandler}/>} />   
                         <Route path="/registration" element={<Registration registrationHandler={registrationHandler} changeHandler={changeHandler}/>} />                                 
                     </React.Fragment>
-                </Routes>
+                </Routes>              
             </div>	
         </div>	
     );
 }
 
-export default Auth;
+export default AuthPage;

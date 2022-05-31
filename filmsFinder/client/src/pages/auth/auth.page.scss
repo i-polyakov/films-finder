@@ -49,6 +49,7 @@
         justify-content: center;
         align-items: center;
         .btn{
+            text-transform: capitalize;
             background-color: colors.$color-blue;
         }
         .btn:hover{

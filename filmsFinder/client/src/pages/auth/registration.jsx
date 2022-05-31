@@ -12,7 +12,7 @@ const Registration =  React.memo(({changeHandler, registrationHandler}) => {
                     <input className="validate" name="password_confirm" onChange={changeHandler} required="required" type="password" placeholder="  Повторите пароль" /> 
                     <div className="row">
                         <button className="wawes-effect wawes-light btn" onClick={registrationHandler}>Зарегистрироваться</button>
-                        <Link className="btn-outline btn-reg" to="/login">Есть аккаунт?</Link>
+                        <Link className="btn-outline btn-reg" to="/auth/login">Есть аккаунт?</Link>
                     </div>
                 </form>
             </div> 
