@@ -19,7 +19,7 @@ module.exports.getMovie = async function(id, res){
             return {errorMessage: response.data.errorMessage}
 
         const film = new Film({
-            title: response.data.title,
+            originTitle: response.data.title,
             year: response.data.year,
             released: response.data.releaseDate,
             runtime: response.data.runtimeStr,

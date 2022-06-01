@@ -28,10 +28,10 @@ router.post( "/api/auth/login", function(req, res, next) {
 
 
 router.post( "/api/auth/registration", function(req, res, next) {
+  
   AuthenticateController.authenticate('registration', function(err, user, info) {
     if (err) 
      return next(err); 
-
     if (!user){
       console.log(req.session.flash);
       return res.status(400).json(req.session.flash); 

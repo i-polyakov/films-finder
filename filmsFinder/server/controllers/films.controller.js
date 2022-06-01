@@ -13,8 +13,8 @@ class FilmsController {
       const response = await imdb.getMovie(req.params.id) 
       if(response.errorMessage)
         return res.json({messages: response.errorMessage});
-      
-      return res.json(response.save()) 
+      response.save()
+      return res.json(response) 
     } catch (error) {
       console.log(error)
     }
@@ -81,7 +81,8 @@ class FilmsController {
 
   async addWatchedFilm(req, res) {
     try {
-      const response = await User.findOne({id: req.user.id, 'watched.filmId': req.body.watched.filmId})
+      const response = await User.findOne({id: req.user.id, watched:{ filmId: req.body.watched.filmId}})
+      console.log(response);
       if(response)
         return res.json(response)
 

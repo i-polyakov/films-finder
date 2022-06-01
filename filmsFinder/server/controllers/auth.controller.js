@@ -44,14 +44,14 @@ passport.use('login', new LocalStrategy(options, (req, login, password, done) =>
 
 
 passport.use('registration',new LocalStrategy(options, (req, login, password, done) => {
-  console.log(req.body)
+  console.log(req.body);
   let password_confirm = req.body.password_confirm;
   
   if (!login  || !password || !password_confirm) 
     return done(null, false, req.flash( 'error_messages', 'Заполните все поля!') );
   
-  if (password.length < 5) 
-    return done(null, false, req.flash( 'error_messages', 'Пароль слишком короткий! (не менее 5 символов)') );
+  if (password.length < 4) 
+    return done(null, false, req.flash( 'error_messages', 'Пароль слишком короткий! (не менее 4 символов)') );
 
   if (password !== password_confirm) 
     return done(null, false, req.flash( 'error_messages', 'Пароли не совпадают!' ));
