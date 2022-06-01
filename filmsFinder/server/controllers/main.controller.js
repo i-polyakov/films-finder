@@ -71,7 +71,44 @@ function recommendedFilms (curentUser, allUsers, countBestSimilars, countRecomme
 class MainController {
     
     async getTopFilms(req, res){
-
+      try {
+        const users = await User.find().populate("watched.filmId")
+        const films = []
+        const count  = []
+        users.forEach(elem => {
+            elem.watched.forEach(element => {
+                if( films[String(element.filmId.id)]){
+                 films[String(element.filmId.id)] += element.rating
+                 count[String(element.filmId.id)] += 1
+ 
+                }
+                else{
+                 films[String(element.filmId.id)] = element.rating
+                 count[String(element.filmId.id )] = 1
+                }
+            
+            });
+        });
+        const arr = []
+        for (const key in films) {
+            if (Object.hasOwnProperty.call (films, key)) 
+                    arr.push({ key, avg:  films[key] /= count[key]});              
+        }
+        const topFilms = arr.sort( (a, b) => {return a.avg - b.avg })
+                        .reverse()
+                        .slice(0,req.params.count);
+        const topFilmsId = []
+        topFilms.forEach(element => {
+            topFilmsId.push(element.key)
+        });  
+        console.log(topFilmsId);      
+        const top = await Film.find({ '_id': {$in: topFilmsId}})
+        //console.log(top)
+        return res.json(top)
+        } catch (error) {
+            console.log(error);
+        }  
+      
     }
     async getUserBasedRecommendation(req, res){
         try {
