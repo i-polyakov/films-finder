@@ -12,7 +12,17 @@ function Collection({props, user}) {
     });
   }
   else{
-    return <h2>Список пуст</h2>
+    return (
+      <div class="col s12 m6">
+        <div class="card horizontal">
+          <div class="card-stacked">
+            <div class="card-content">
+              <span class="card-title">Список пуст</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
   }
   return (
     <div>
