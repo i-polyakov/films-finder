@@ -3,13 +3,13 @@ import React, { useContext, useEffect } from "react";
 import { matchRoutes, useLocation } from "react-router-dom";
 import { FilmContext } from "../../context/film.context";
 import Collection from "../collection/collection";
+import "./container.scss"
 
-
-const Container = ({ tt }) =>{
+const Container = ( ) =>{
     const { pathname } = useLocation();
-    console.log(pathname);
+    //sconsole.log(pathname);
     const { films, isload, run } = useContext(FilmContext);
-    console.log({ films, isload, run });
+    //console.log({ films, isload, run });
   useEffect(() => {
     run(pathname);
     // eslint-disable-next-line 
@@ -17,7 +17,7 @@ const Container = ({ tt }) =>{
 
   return (
     <div className="film-container">
-      {isload ? <Collection data={films} />:<h3>Ошибка загрузки</h3>}
+      {isload ? <Collection props={films} />:<h3>Ошибка загрузки</h3>}
     </div>
   );
 };

@@ -113,7 +113,7 @@ class MainController {
     async getUserBasedRecommendation(req, res){
         try {
             const table = []
-            const curentUser = await User.findOne({ login: req.user.login })
+            const curentUser = await User.findOne({ login: req.body.user.login })
             const allUsers = await User.find({ },'id login watched')
            
             allUsers.forEach(element => {
@@ -127,7 +127,7 @@ class MainController {
             const recommendation =  recommendedFilms(curentUser, allUsers, 4, 3)
             //console.log(recommendation);
             const films = await Film.find({ '_id': {$in: recommendation}})
-            console.log(films)
+            //console.log(films)
             return res.json(films)
           } catch (error) {
             console.log(error);

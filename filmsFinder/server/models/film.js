@@ -2,7 +2,6 @@ const {Schema, model} = require('mongoose')
 
 const filmSchema = new Schema({
     title: String,
-    originTitle: String,
     year: Number,
     released: Date,
     runtime: String,

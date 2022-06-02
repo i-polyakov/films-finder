@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import {useSearchParams, Route, Navigate, Routes, useLocation} from 'react-router-dom'
 import Container from './components/container/container';
 import Navbar from './components/navbar/navbar';
+import RecContainer from './components/recContainer/recContainer';
 import Sidebar from './components/sidebar/sidebar';
 import FilmContextProvider from './context/film.context';
+import RecContextProvider from './context/rec.context';
 import AuthPage from './pages/auth/auth.page';
-import MainPage from './pages/main/main.page';
+
 
 
 export const useRoutes = (isLogin, user) => {
@@ -15,13 +17,18 @@ export const useRoutes = (isLogin, user) => {
     if(isLogin){
         return (
             <FilmContextProvider>
-                <Navbar/>
-                <Sidebar user={user}/>
-                <Routes> 
-                    <Route path='*' element={<Navigate to={url+"/want"} replace />}/>
-                    <Route path={url+"/main"} element={<MainPage user={user}/>}/>
-                    <Route path={url+"/want"} element={<Container user={user}/>}/>
-                </Routes>
+                <RecContextProvider>
+                    <Navbar/>
+                    <Sidebar user={user}/>
+                    <Suspense fallback={ <div class="progress"><div class="indeterminate"></div></div>}>
+                        <Routes> 
+                            <Route path='*' element={<Navigate to={url+"/want"} replace />}/>
+                            <Route path={url+"/main"} element={<RecContainer user={user}/>}/>
+                            <Route path={url+"/want"} element={<Container user={user}/>}/>
+                            <Route path={url+"/watched"} element={<Container user={user}/>}/>
+                        </Routes>
+                    </Suspense>
+                </RecContextProvider>
             </FilmContextProvider>
            
         );

@@ -3,12 +3,12 @@ const router = new Router();
 const FilmsController = require("../controllers/films.controller");
 
 //-----------user----------//
-router.get("/film/:id", isAuthenticated, FilmsController.getFilmById)//Возвращает фильм по imd id
+router.get("/film/:id", FilmsController.getFilmById)//Возвращает фильм по imd id
 router.post("/film", isAuthenticated, FilmsController.getFilmsByTitle)//Возвращает фильм по названию
 //router.get("/films", checkNotAuthenticated, FilmsController.getOrderFilms);//
 
-router.get("/:login/want", isAuthenticated, FilmsController.getWantFilms);//Фильмы которые юзер хочет посмотреть
-router.get("/:login/watched", isAuthenticated, FilmsController.getWatchedFilms);//Фильмы которые юзер посмотрел
+router.get("/:login/want", FilmsController.getWantFilms);//Фильмы которые юзер хочет посмотреть
+router.get("/:login/watched", FilmsController.getWatchedFilms);//Фильмы которые юзер посмотрел
 
 router.post("/want", isAuthenticated, FilmsController.addWantFilm);//Добавить фильм в список посмотрю
 router.delete("/want/:id", isAuthenticated, FilmsController.delWantFilm);//удалить из списка
@@ -33,6 +33,8 @@ router.delete("/watched/:id", isAuthenticated, FilmsController.delWatchedFilm);/
 //router.post("/changeStatusFilm", checkNotAuthenticated, FilmsController.changeStatusFilm);
 
 function isAuthenticated(req, res, next) {
+  console.log("#####################");
+    console.log(req.data);
   if (req.isAuthenticated()) 
     return next();
     res.status(401).json("User not logged!")   

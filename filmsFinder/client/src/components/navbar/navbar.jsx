@@ -13,7 +13,7 @@ const Navbar = () => {
                     </a>
                     <div className="input-field right header__search">
                         <form  action="searching" method="GET" >						
-                            <input id="search" type="search" name="search" placeholder=" Поиск..."/>
+                            <input id="search" type="search" name="search" autoComplete="off" placeholder=" Поиск..."/>
                             <button className='right' type="submit">	
                                 <img src="/icons/search.svg" width="20" height="20"/>
                             </button>

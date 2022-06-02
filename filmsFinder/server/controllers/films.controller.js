@@ -37,7 +37,8 @@ class FilmsController {
  
   async getWantFilms(req, res) {
     try {
-      const user = await User.findOne({ login: req.params.login })
+      console.log(req.session);
+      const user = await User.findOne({ login: req.params.login }).populate("want")
       if(user)
       return res.json(user.want)
     return res.json({messages: 'user not found!'})  
@@ -48,7 +49,7 @@ class FilmsController {
 
   async getWatchedFilms(req, res) {
     try {
-      const user = await User.findOne({ login: req.params.login })
+      const user = await User.findOne({ login: req.params.login }).populate("watched.filmId")
       if(user)
         return res.json(user.watched)
       return res.json({messages: 'user not found!'})  
