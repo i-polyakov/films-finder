@@ -1,56 +1,51 @@
-@use '../../colors/colors.scss';
+@use "../../colors/colors.scss";
 
-.navbar{
-    background: colors.$color-header;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
+.navbar {
+  background: colors.$color-header;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
-.logo{
+.logo {
   display: block;
-	margin:  0 15% 0 20px;
+  margin: 0 15% 0 20px;
   //vertical-align: middle;
-	}
+}
 
-body .input-field{
+body .input-field {
   font-size: 14px;
   height: 80%;
   width: 50%;
-  form{
+  form {
     background-color: colors.$color-search;
     display: flex;
-    input{
-
+    input {
       border: none;
       outline: none;
-      color:  colors.$color-text;
-    } 
-    input:focus{  
-      color:  colors.$color-blue  !important;
-      background-color:  colors.$color-search  !important;
-    }  
+      color: colors.$color-text;
+    }
+    input:focus {
+      color: colors.$color-blue !important;
+      background-color: colors.$color-search !important;
+    }
   }
 
-  
-
-  .button{
+  .button {
     background: colors.$color-text;
     border: none;
-    color:  colors.$color-text;
+    color: colors.$color-text;
   }
 }
-form .button:hover{
+form .button:hover {
   transition: all 260ms ease-out;
-    background-color:  colors.$color-blue;
-   
+  background-color: colors.$color-blue;
 }
-li:hover{
-  a{
+li:hover {
+  a {
     color: colors.$color-blue;
     transition: all 260ms ease-out;
   }
   background: colors.$color-search;
   transition: all 260ms ease-out;
 }
-

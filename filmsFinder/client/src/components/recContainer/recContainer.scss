@@ -1,21 +1,19 @@
-@use '../../colors/colors.scss';
+@use "../../colors/colors.scss";
 .film-container {
-    padding: 10px;
-    margin-left: 10px;
-    display: flex;
-    color: colors.$color-text;
-.card{
-  background-color: unset;
-}
-     
+  padding: 10px;
+  margin-left: 10px;
+  display: flex;
+  color: colors.$color-text;
+  .card {
+    background-color: unset;
   }
-
-  hr {
-    display: block;
-    height: 1px;
-    border: 0;
-    border-top: 1px solid #ccc;
-    margin: 1em 0;
-    padding: 0;
 }
-  
+
+hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #ccc;
+  margin: 1em 0;
+  padding: 0;
+}

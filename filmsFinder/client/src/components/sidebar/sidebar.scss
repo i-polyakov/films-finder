@@ -1,5 +1,5 @@
-@use '../../colors/colors.scss';
-.wrapp{
+@use "../../colors/colors.scss";
+.wrapp {
   display: block;
   position: relative;
   max-width: 200px;
@@ -11,48 +11,46 @@
   top: 64px;
 }
 //----side_bar---------------->
-.side_bar{
-    min-width: 200px;
-    background-color: colors.$color-sb;
-    height: 100%;
-    font-size: 20px;
-    float: left;
-    
-	ul{
+.side_bar {
+  min-width: 200px;
+  background-color: colors.$color-sb;
+  height: 100%;
+  font-size: 20px;
+  float: left;
 
-	    list-style-type: none;
-	    margin: 0px;
-	    padding: 0px; 
-      transition: 0.6s;
-	}
-	li{	
-    width: 100%;  
-		display: flex;
-		align-items: center;
+  ul {
+    list-style-type: none;
+    margin: 0px;
+    padding: 0px;
+    transition: 0.6s;
+  }
+  li {
+    width: 100%;
+    display: flex;
+    align-items: center;
     //padding-left: 6px;
-	}
-	a{
+  }
+  a {
     text-align: left;
-		display: flex;
-    width: 100%;  
+    display: flex;
+    width: 100%;
     padding: 25px 20px;
-    text-decoration: none; 
+    text-decoration: none;
     color: colors.$color-text;
-      
-	} 
- img{
+  }
+  img {
     margin-right: 15px;
-    filter:brightness(100);
-   // fill: red;
-
-	 }
+    filter: brightness(100);
+    // fill: red;
+  }
 }
 
-.active, .side_bar ul :hover{
-  img{
-    filter:brightness(1);
-   }
-    transition: 0.6s;
-    color: colors.$color-blue;
-    background-color:colors.$color-search;
+.active,
+.side_bar ul :hover {
+  img {
+    filter: brightness(1);
+  }
+  transition: 0.6s;
+  color: colors.$color-blue;
+  background-color: colors.$color-search;
 }
