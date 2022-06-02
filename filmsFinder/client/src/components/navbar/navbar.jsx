@@ -1,9 +1,19 @@
 import React, { useContext } from 'react';
+import { Link } from 'react-router-dom';
 import { AuthContext } from '../../context/auth.context';
 import './navbar.scss'
 
 const Navbar = () => {
-    const {islogin, logout} = useContext(AuthContext)
+    const {islogin, logout, user} = useContext(AuthContext)
+    console.log(`${user.login}/searching/${document.getElementById("search")?document.getElementById("search").value:""}`);
+    const [searchTerm, setSearchTerm] = React.useState("");
+
+    const handleChange = event => {
+        setSearchTerm(document.getElementById("search").value);
+       
+           
+    };
+    
     return (
         <div className="navbar-fixed">
             <nav>
@@ -12,11 +22,13 @@ const Navbar = () => {
                         <img className='logo' src="/icons/logo.svg"  alt=" " width="50" height="50"></img>
                     </a>
                     <div className="input-field right header__search">
-                        <form  action="searching" method="GET" >						
-                            <input id="search" type="search" name="search" autoComplete="off" placeholder=" Поиск..."/>
-                            <button className='right' type="submit">	
+                        <form  action="searching" method="GET"  onSubmit = {e=>e.preventDefault} >						
+                            <input id="search" type="search"  value={searchTerm} name="search" onChange={handleChange} autoComplete="off" placeholder=" Поиск..." />
+                            <Link className='right button' 
+                                to={`${user.login}/searching/${document.getElementById("search")?document.getElementById("search").value:""}`} 
+                                onClick = {handleChange}>	
                                 <img src="/icons/search.svg" width="20" height="20"/>
-                            </button>
+                            </Link>
                         </form>
 				    </div>
                 

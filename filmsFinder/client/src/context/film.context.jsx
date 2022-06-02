@@ -10,7 +10,7 @@ const FilmContextProvider = props => {
   const [isload, setIsLoad] = useState(true);
   const run = async location => {
       try {
-        console.log(location)
+        //console.log(location)
         const response = await axios.get(`http://127.0.0.1:8080/api/films${location}`)
         setFilms(response)
         setIsLoad(true)

@@ -23,7 +23,7 @@ class FilmsController {
 //-----------user----------//
   async getFilmsByTitle(req, res) {  //search
       const title = req.body.search;
-    
+      console.log("server "+title);
       if(!title)
         return res.json({messages: "Пустой запрос!"});
 

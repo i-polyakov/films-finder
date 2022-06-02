@@ -4,7 +4,7 @@ const FilmsController = require("../controllers/films.controller");
 
 //-----------user----------//
 router.get("/film/:id", FilmsController.getFilmById)//Возвращает фильм по imd id
-router.post("/film", isAuthenticated, FilmsController.getFilmsByTitle)//Возвращает фильм по названию
+router.post("/film", FilmsController.getFilmsByTitle)//Возвращает фильм по названию
 //router.get("/films", checkNotAuthenticated, FilmsController.getOrderFilms);//
 
 router.get("/:login/want", FilmsController.getWantFilms);//Фильмы которые юзер хочет посмотреть

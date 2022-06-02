@@ -34,13 +34,13 @@ body .input-field{
 
   
 
-  button{
+  .button{
     background: colors.$color-text;
     border: none;
     color:  colors.$color-text;
   }
 }
-form button:hover{
+form .button:hover{
   transition: all 260ms ease-out;
     background-color:  colors.$color-blue;
    

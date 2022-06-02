@@ -2,10 +2,10 @@ const axios = require('axios');
 const Film = require("../models/film.js");
 const baseUrl = 'https://imdb-api.com/ru/API/'
 apiKey = 'k_g9eym8du'
-
+secondKey = 'k_c6jhz20o'
 module.exports.searchMovie = async function(title, res){
     try {      
-        const response = await axios.get(encodeURI(baseUrl+'SearchMovie/'+apiKey+'/'+title))  
+        const response = await axios.get(encodeURI(baseUrl+'SearchMovie/'+secondKey+'/'+title))  
         return response.data.results
     } catch (error) {
         console.log(error)
@@ -13,7 +13,7 @@ module.exports.searchMovie = async function(title, res){
 }
 module.exports.getMovie = async function(id, res){
     try {      
-        const response = await axios.get(encodeURI(baseUrl+'Title/'+apiKey+'/'+id)) 
+        const response = await axios.get(encodeURI(baseUrl+'Title/'+secondKey+'/'+id)) 
         console.log(response.data)
         if(response.data.errorMessage)
             return {errorMessage: response.data.errorMessage}

@@ -2,7 +2,7 @@ import React from 'react'
 import './film.scss'
 export default function Film({info}) {
    if(info.filmId)
-      info =info.filmId
+      info = info.filmId
   return (
     <li class="column">  
         <div class="column__item">
