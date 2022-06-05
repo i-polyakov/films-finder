@@ -4,15 +4,23 @@ import { AuthContext } from "./auth.context";
 export const FilmContext = createContext();
 
 const FilmContextProvider = (props) => {
-  const { login } = useContext(AuthContext);
+  const { login, session } = useContext(AuthContext);
   //console.log(localStorage.getItem("userData"));
   const [films, setFilms] = useState([]);
   const [isload, setIsLoad] = useState(true);
+  //const newsSession = session.cookie
+  ///newSession["passport"] = session.passport
   const run = async (location) => {
     try {
-      //console.log(location)
+      document.cookie = "connect.sid=s%3AuBho4LnxohtQDd73pw8_pl2AN4ew_NEK.31QnJZjx3wP9JMhKLgmQSSN8YckEe0cUPwHA2L46gwU"
+      //axios.defaults.withCredentials =true; 
+      //console.log(newSession)
       const response = await axios.get(
-        `http://127.0.0.1:8080/api/films${location}`
+        `http://127.0.0.1:8080/api/films${location}`,{    
+          headers: {
+            "Content-Type": "application/json"
+          }
+        }
       );
       setFilms(response);
       setIsLoad(true);

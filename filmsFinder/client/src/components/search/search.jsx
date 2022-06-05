@@ -25,7 +25,9 @@ const Search = () => {
               {!isload ? (
                 <Collection props={films} />
               ) : (
-                <h3>Ошибка загрузки</h3>
+                <div class="progress">
+                  <div class="indeterminate"></div>
+                </div>
               )}
             </div>
           </div>

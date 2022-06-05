@@ -24,7 +24,7 @@ function recommendedFilms (curentUser, allUsers, countBestSimilars, countRecomme
     // заполнение матрицы similars
     allUsers.forEach(user => {
         if(user.id != curentUser.id)
-            similars.push({watched: user.watched, login: user.login, similarity: distCos(curentUser.watched, user.watched)})
+            similars.push({watched: user.watched, login: user.login, similarity: distCos(curentUser.watched, user.watched)?distCos(curentUser.watched, user.watched):0})
     });
     //countBestSimilars наиболее похожих
     bestSimilars = similars.sort((a, b) => (a.similarity > b.similarity) ? 1 : ((b.similarity > a.similarity) ? -1 : 0))
@@ -35,6 +35,7 @@ function recommendedFilms (curentUser, allUsers, countBestSimilars, countRecomme
     bestSimilars.forEach(element => {
         similarsSum += element.similarity
     });
+    console.log(similars);
     //сумма калиброванных оценок по фильмам
     sum = []    
     bestSimilars.forEach(elem => {
@@ -125,7 +126,7 @@ class MainController {
             });
             console.table(table)
             const recommendation =  recommendedFilms(curentUser, allUsers, 4, 3)
-            //console.log(recommendation);
+            //console.log(curentUser);
             const films = await Film.find({ '_id': {$in: recommendation}})
             //console.log(films)
             return res.json(films)

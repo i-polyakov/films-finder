@@ -68,6 +68,7 @@ class UsersController {
     async getFollowing(req, res) {
         try {
           const user = await User.findOne({ login: req.params.login })
+          console.log(user);
           if(user)
             return res.json(user.following)
         return res.json({messages: 'user not found!'})  

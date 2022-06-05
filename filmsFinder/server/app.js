@@ -20,6 +20,8 @@ mongoose.connect('mongodb://localhost/filmsFinderDB').then(()=> console.log('fil
 
 app.use(require('morgan')('dev'));
 app.use(require('cors')())
+// {origin: "http://localhost:3000",
+// credentials: true}
 app.use(cookieParser('secret'));
 app.use(flash());
 app.use( session({

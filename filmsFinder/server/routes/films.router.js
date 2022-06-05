@@ -8,13 +8,13 @@ router.post("/film", FilmsController.getFilmsByTitle)//Возвращает фи
 //router.get("/films", checkNotAuthenticated, FilmsController.getOrderFilms);//
 
 router.get("/:login/want", FilmsController.getWantFilms);//Фильмы которые юзер хочет посмотреть
-router.get("/:login/watched", FilmsController.getWatchedFilms);//Фильмы которые юзер посмотрел
+router.get("/:login/watched",FilmsController.getWatchedFilms);//Фильмы которые юзер посмотрел
 
-router.post("/want", isAuthenticated, FilmsController.addWantFilm);//Добавить фильм в список посмотрю
-router.delete("/want/:id", isAuthenticated, FilmsController.delWantFilm);//удалить из списка
+router.post("/want",  FilmsController.addWantFilm);//Добавить фильм в список посмотрю
+router.delete("/want/:id", FilmsController.delWantFilm);//удалить из списка
 
-router.post("/watched", isAuthenticated, FilmsController.addWatchedFilm);//Добавить фильм в список просмотренно
-router.delete("/watched/:id", isAuthenticated, FilmsController.delWatchedFilm);//удалить из списка
+router.post("/watched", FilmsController.addWatchedFilm);//Добавить фильм в список просмотренно
+router.delete("/watched/:id", FilmsController.delWatchedFilm);//удалить из списка
 
 //-----------moder----------//
 
@@ -34,7 +34,11 @@ router.delete("/watched/:id", isAuthenticated, FilmsController.delWatchedFilm);/
 
 function isAuthenticated(req, res, next) {
   console.log("#####################");
-    console.log(req.data);
+  //req.headers.session.forEach(element => {
+    console.log( req.headers);
+    console.log( req.session);
+  //});
+ 
   if (req.isAuthenticated()) 
     return next();
     res.status(401).json("User not logged!")   
