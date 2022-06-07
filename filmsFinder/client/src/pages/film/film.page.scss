@@ -7,7 +7,10 @@
     justify-content: center;
      
     .wrapper{
-        
+        li:hover{
+          background-color: inherit;
+        }
+        max-height: none;
         max-width: 880px;
         height: none;
         display: flex ;

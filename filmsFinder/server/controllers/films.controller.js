@@ -60,12 +60,14 @@ class FilmsController {
 
   async addWantFilm(req, res) {
     try {
-      await User.findByIdAndUpdate(req.user.id, {
+      console.log(req.body.user);
+      //удалить из watched
+      await User.findByIdAndUpdate(req.body.user.id, {
         $pull: {watched:{filmId: req.body.want}}
       }, { safe: true, multi:true })
-      
-      const user = await User.findByIdAndUpdate(req.user.id, {$addToSet: req.body},{new: true})
-      return res.json(user)
+      //добавить
+      const user = await User.findByIdAndUpdate(req.body.user.id, {$addToSet: req.body},{new: true})
+      return res.json(user.want)
     } catch (error) {
       console.log(error);
     }  
@@ -73,7 +75,7 @@ class FilmsController {
 
   async delWantFilm(req, res) {
     try {
-      const user = await User.findByIdAndUpdate(req.user.id, {$pull: {want: req.params.id}},{new: true})
+      const user = await User.findByIdAndUpdate(req.body.user.id, {$pull: {want: req.params.id}},{new: true})
       return res.json(user)
     } catch (error) {
       console.log(error);

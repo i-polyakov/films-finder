@@ -2,9 +2,12 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { FilmContext } from '../../context/film.context';
 import translate from "translate";
-
+import M from 'materialize-css/dist/js/materialize.min.js';
 import "./film.page.scss"
-const FilmPage = () => {
+import axios from 'axios';
+const FilmPage = ({user}) => {
+    const [isWant, setWant] = useState();
+    const [isWatched, setWatched] = useState();
     const [genresRu, setGenresRu] = useState([])
     const [film, setfilm] = useState({})
 
@@ -34,13 +37,78 @@ const FilmPage = () => {
             setfilm(films.data)
             getGenresRu( films.data.genres)          
         }
-    },[films]) 
+    },[films])
+    
+    //   useEffect(() => {
+    //   run(pathname);
+    // }, [pathname]);
+    const handleClickWant = async () => {
+        console.log("handle");
+        if(isWant){
+            const response = await axios.delete(
+                `http://127.0.0.1:8080/api/films/want/${film._id}`,{user: user},{    
+                headers: {
+                    "Content-Type": "application/json"
+                }
+                }
+            );
+            setWant(false)
+        }else{
+            const response = await axios.post(
+                `http://127.0.0.1:8080/api/films/want`,{user: user, want:film._id},{    
+                headers: {
+                    "Content-Type": "application/json"
+                }
+                }
+            );
+            setWant(true)
+            setWatched(false)
+        }
+    }
+        const handleClickWatched =  () => {
+            var elems = document.querySelectorAll('.modal');
+            var instances = M.Modal.init(elems);
+            console.log("handle");
+            // if(isWant){
+            //     const response = await axios.delete(
+            //         `http://127.0.0.1:8080/api/films/watched/${film._id}`,{user: user},{    
+            //         headers: {
+            //             "Content-Type": "application/json"
+            //         }
+            //         }
+            //     );
+            //     setWant(false)
+            // }else{
+            //     const response = await axios.post(
+            //         `http://127.0.0.1:8080/api/films/watched`,{user: user, want:film._id},{    
+            //         headers: {
+            //             "Content-Type": "application/json"
+            //         }
+            //         }
+            //     );
+            //     setWant(true)
+            //     setWatched(false)
+            // }
+    }
    // console.log(film.countries);
     return (            
         <div class="row main__container">
-            <ul className="wrapper ">
-                <li class="col s5">
-                    <img src={film.image} alt={film.title} class="item__poster"/>
+            <ul className=" wrapper">
+                <li class="col s5 center-align">
+                    <img src={film.image} alt={film.title} class="item__poster "/>
+                    <div className="control">
+                        <button class="item__want-button" onClick={handleClickWant}>Посмотрю</button>
+                        <button data-target="modal1" class="btn modal-trigger item__watched-button"  onClick={handleClickWatched} >Просмотрен</button>				
+                        <div id="modal1" class="modal">
+                            <div class="modal-content">
+                                <h4>Modal Header</h4>
+                                <p>A bunch of text</p>
+                            </div>
+                            <div class="modal-footer">
+                                <a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a>            
+                            </div>
+                        </div>
+                    </div>
                 </li>
                 <li class="col s7">
                     <div class="item__about-Film">
@@ -83,7 +151,9 @@ const FilmPage = () => {
                         </tbody>
                     </table>
                 </li>
-                <li className="w col s12">12312</li>
+               
+                    <div className="rating col s7"></div>
+               
             </ul>
            
             {/* <div class="column">
@@ -116,6 +186,7 @@ const FilmPage = () => {
                     </p>
                 </div>
             </div> */}
+       
         </div>
       
     );

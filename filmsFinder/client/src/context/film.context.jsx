@@ -12,7 +12,7 @@ const FilmContextProvider = (props) => {
   ///newSession["passport"] = session.passport
   const run = async (location) => {
     try {
-      document.cookie = "connect.sid=s%3AuBho4LnxohtQDd73pw8_pl2AN4ew_NEK.31QnJZjx3wP9JMhKLgmQSSN8YckEe0cUPwHA2L46gwU"
+      //document.cookie = "connect.sid=s%3AuBho4LnxohtQDd73pw8_pl2AN4ew_NEK.31QnJZjx3wP9JMhKLgmQSSN8YckEe0cUPwHA2L46gwU"
       //axios.defaults.withCredentials =true; 
       //console.log(newSession)
       const response = await axios.get(

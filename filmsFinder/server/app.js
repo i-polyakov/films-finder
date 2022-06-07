@@ -25,7 +25,7 @@ app.use(require('cors')())
 app.use(cookieParser('secret'));
 app.use(flash());
 app.use( session({
-   cookie: { maxAge: 24*360000 },
+   //cookie: { maxAge: 24*360000 },
     // Key we want to keep secret which will encrypt all of our information
     secret: "secret",
     // Should we resave our session variables if nothing has changes which we dont
