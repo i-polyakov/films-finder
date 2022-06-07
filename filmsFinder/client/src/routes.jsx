@@ -16,6 +16,7 @@ import FilmContextProvider from "./context/film.context";
 import RecContextProvider from "./context/rec.context";
 import SearchContextProvider from "./context/search.context";
 import AuthPage from "./pages/auth/auth.page";
+import FilmPage from "./pages/film/film.page";
 
 export const useRoutes = (isLogin, user) => {
   const url = `/${user ? user.login : ""}`;
@@ -56,6 +57,10 @@ export const useRoutes = (isLogin, user) => {
                 <Route
                   path={url + "/watched"}
                   element={<Container user={user} />}
+                />
+                 <Route
+                  path={"/film/:id"}
+                  element={<FilmPage user={user} />}
                 />
               </Routes>
             </Suspense>

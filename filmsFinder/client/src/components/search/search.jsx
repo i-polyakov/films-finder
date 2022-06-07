@@ -23,7 +23,7 @@ const Search = () => {
             <div class="card-content">
               <span class="card-title">Результат поиска</span>
               {!isload ? (
-                <Collection props={films} />
+                <Collection props={films} isSearch = {true} />
               ) : (
                 <div class="progress">
                   <div class="indeterminate"></div>

@@ -10,7 +10,7 @@ class FilmsController {
       if(film)
         return res.json(film)
       
-      const response = await imdb.getMovie(req.params.id) 
+      const response = ""//await imdb.getMovie(req.params.id) 
       if(response.errorMessage)
         return res.json({messages: response.errorMessage});
       response.save()

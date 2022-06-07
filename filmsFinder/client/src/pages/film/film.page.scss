@@ -1,0 +1,64 @@
+@use "../../colors/colors.scss";
+.main__container {
+   
+    padding: 30px;
+    margin-left: 10px;
+    display: flex ;
+    justify-content: center;
+     
+    .wrapper{
+        
+        max-width: 880px;
+        height: none;
+        display: flex ;
+        width: 100%;
+        img {
+            border-radius: 7px;
+            max-width: 290px;
+            //object-fit: cover;
+            height: 100%;
+            width: 100%;
+            justify-self: left;
+          }
+
+          .item__about-Film {
+            padding: 0 10px 0 0;
+          
+            font-size: 25px;
+            font-family: "SF Pro Display", "SFPRO_d", sans-serif;
+            .row__title {
+                max-width: 80%;
+                float: left;
+              }
+            .row__year {
+            filter: opacity(50%);
+            float: right;
+            }
+          }
+        
+    .w{
+        display: flex;
+    }      
+    }
+   
+  }
+.info tr{
+    border-bottom: 2px solid rgba(65, 65, 65, 1);
+    //border-color: aliceblue;
+}
+.row .col{
+    padding: 0  ;
+} 
+table.striped > tbody > tr:nth-child(odd) {
+    
+    //background-color: colors.$color-search;
+    background-color: rgba(242, 242, 242, 0.1);
+}  
+.actors{
+    white-space: nowrap;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    //display: inline-blocks;
+    //height: 52.5px;
+    max-width: 350px;
+}

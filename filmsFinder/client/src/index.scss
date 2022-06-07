@@ -11,6 +11,33 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+html, body {
+  scrollbar-color: colors.$color-sb colors.$color-search !important; /* «цвет ползунка» «цвет полосы скроллбара» */
+  scrollbar-width: thin !important;  /* толщина */
+}
+body::-webkit-scrollbar {
+  width: 12px;               /* ширина scrollbar */
+}
+body::-webkit-scrollbar-track {
+  background:colors.$color-sb;        /* цвет дорожки */
+}
+body::-webkit-scrollbar-thumb { 
+  background-color: colors.$color-search ;    /* цвет плашки */
+  border-radius: 20px;       /* закругления плашки */
+  border: 3px solid colors.$color-sb;  /* padding вокруг плашки */
+}
+body *::-webkit-scrollbar {
+  width: 10px;               /* ширина scrollbar */
+}
+body *::-webkit-scrollbar-track {
+  background:colors.$color-sb;        /* цвет дорожки */
+}
+body *::-webkit-scrollbar-thumb { 
+  background-color: colors.$color-search ;    /* цвет плашки */
+  border-radius: 20px;       /* закругления плашки */
+  border: 3px solid colors.$color-sb;  /* padding вокруг плашки */
+}
+
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
