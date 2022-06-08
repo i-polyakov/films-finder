@@ -6,6 +6,7 @@ export const useAuth = () => {
   const [isReady, setIsReady] = useState(false);
 
   const login = useCallback((session, user) => {
+   
     setSession(session);
     setUser(user);
     localStorage.setItem(
@@ -28,5 +29,5 @@ export const useAuth = () => {
     }
     setIsReady(true);
   }, []);
-  return { login, logout, session, user, isReady };
+  return { login, logout,setUser, session, user, isReady };
 };

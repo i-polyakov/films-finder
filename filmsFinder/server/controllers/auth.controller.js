@@ -44,7 +44,7 @@ passport.use('login', new LocalStrategy(options, (req, login, password, done) =>
 
 
 passport.use('registration',new LocalStrategy(options, (req, login, password, done) => {
-  console.log(req.body);
+  //console.log(req.body);
   let password_confirm = req.body.password_confirm;
   
   if (!login  || !password || !password_confirm) 
@@ -67,7 +67,7 @@ passport.use('registration',new LocalStrategy(options, (req, login, password, do
           password: hashedPassword
         });
         user.save();
-        console.log(user);
+        //console.log(user);
         return done(null, user);
       }
     });

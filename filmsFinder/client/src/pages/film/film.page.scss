@@ -2,7 +2,6 @@
 .main__container {
    
     padding: 30px;
-    margin-left: 10px;
     display: flex ;
     justify-content: center;
      
@@ -10,6 +9,44 @@
         li:hover{
           background-color: inherit;
         }
+        .modal-content{
+         display: flex;
+        }
+        .control .modal *{ 
+          color: inherit;
+          background-color: colors.$color-bg;
+
+          
+
+          input, label{
+            span{
+              font-size: 20px;
+              background-color: rgba(0, 0, 0, 0); 
+              z-index: 5;
+              display: block;
+              padding-bottom: 40px;
+              position: absolute;
+              //height: 40px;
+              padding: 0 14px 40px 11px ;
+              //padding: auto;
+              
+            }
+           
+          
+            //display:block;
+        }
+        .span-after{
+          
+          margin-top: 40px;
+        }
+        }
+        .radioButtons{
+          width: 500px;
+         margin: auto;
+        
+
+        }
+       
         max-height: none;
         max-width: 880px;
         height: none;
@@ -42,6 +79,14 @@
     .w{
         display: flex;
     }      
+    }
+   .wrapp__button{
+     display: flex;
+     justify-content: space-around;
+    .item__want-button, .item__watched-button{
+      background-color: colors.$color-sb ;
+  }
+
     }
    
   }

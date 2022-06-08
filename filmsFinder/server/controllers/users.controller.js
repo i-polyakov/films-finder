@@ -67,7 +67,7 @@ class UsersController {
     } 
     async getFollowing(req, res) {
         try {
-          const user = await User.findOne({ login: req.params.login })
+          const user = await User.findOne({ login: req.params.login }).populate("following")
           console.log(user);
           if(user)
             return res.json(user.following)
@@ -78,7 +78,7 @@ class UsersController {
       }
       async getFollowers(req, res) {
         try {
-          const user = await User.findOne({ login: req.params.login })
+          const user = await User.findOne({ login: req.params.login }).populate("followers")
           if(user)
             return res.json(user.followers)
         return res.json({messages: 'user not found!'})  

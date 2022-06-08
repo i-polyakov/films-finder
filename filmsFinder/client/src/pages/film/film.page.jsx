@@ -5,15 +5,18 @@ import translate from "translate";
 import M from 'materialize-css/dist/js/materialize.min.js';
 import "./film.page.scss"
 import axios from 'axios';
-const FilmPage = ({user}) => {
+import { AuthContext } from '../../context/auth.context';
+const FilmPage = () => {
     const [isWant, setWant] = useState();
     const [isWatched, setWatched] = useState();
     const [genresRu, setGenresRu] = useState([])
     const [film, setfilm] = useState({})
 
+    const { user, setUser } = useContext(AuthContext);
+
     const { pathname } = useLocation();
     const { films, isload, run } = useContext(FilmContext);
-
+    console.log(film._id)
     const getGenresRu = (genres) => {
         if (genres){        
             setGenresRu([])    
@@ -35,24 +38,44 @@ const FilmPage = ({user}) => {
     useEffect(() => {
         if(films.data.genres){       
             setfilm(films.data)
-            getGenresRu( films.data.genres)          
+            getGenresRu( films.data.genres)                
         }
     },[films])
     
-    //   useEffect(() => {
-    //   run(pathname);
-    // }, [pathname]);
+    useEffect(() => {
+        setWatched(false)
+        setWant(false)
+       
+        if(user.watched)
+        for (var element of user.watched) 
+            if (element.filmId === film._id) {             
+                setWatched(true)
+                setWant(false)
+            }
+        if(user.want)
+            for (var element of user.want) 
+                if (element === film._id) {           
+                    setWatched(false)
+                    setWant(true)
+                }         
+    });
+
     const handleClickWant = async () => {
-        console.log("handle");
+        console.log("handle want");
         if(isWant){
             const response = await axios.delete(
-                `http://127.0.0.1:8080/api/films/want/${film._id}`,{user: user},{    
+                `http://127.0.0.1:8080/api/films/want/${film._id}`,{    
                 headers: {
                     "Content-Type": "application/json"
-                }
-                }
+                },
+                data:{user: user}
+            }
             );
-            setWant(false)
+           
+            if(response.data._id === user._id){
+                setUser(response.data)
+                setWant(false)
+            }
         }else{
             const response = await axios.post(
                 `http://127.0.0.1:8080/api/films/want`,{user: user, want:film._id},{    
@@ -61,52 +84,157 @@ const FilmPage = ({user}) => {
                 }
                 }
             );
+           
+        if(response.data._id === user._id){
+            setUser(response.data)
             setWant(true)
             setWatched(false)
         }
+        }
     }
-        const handleClickWatched =  () => {
+    const handleClickWatched = async () => {
+            
+            if(isWatched){
+                const response = await axios.delete(
+                    `http://127.0.0.1:8080/api/films/watched/${film._id}`,{    
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        data:{user: user}
+                    }
+                );
+                if(response.data._id === user._id){
+                    setUser(response.data)
+                    setWatched(false)
+                }
+            }else{
+            //Показать модальное окно
             var elems = document.querySelectorAll('.modal');
             var instances = M.Modal.init(elems);
-            console.log("handle");
-            // if(isWant){
-            //     const response = await axios.delete(
-            //         `http://127.0.0.1:8080/api/films/watched/${film._id}`,{user: user},{    
-            //         headers: {
-            //             "Content-Type": "application/json"
-            //         }
-            //         }
-            //     );
-            //     setWant(false)
-            // }else{
-            //     const response = await axios.post(
-            //         `http://127.0.0.1:8080/api/films/watched`,{user: user, want:film._id},{    
-            //         headers: {
-            //             "Content-Type": "application/json"
-            //         }
-            //         }
-            //     );
-            //     setWant(true)
-            //     setWatched(false)
-            // }
+            console.log("handle watched");       
+            }
     }
-   // console.log(film.countries);
+    const handleClickSubmit = async (e) => {
+        e.preventDefault()
+        console.log(e.target.textarea1.value);
+        console.log(e.target.group1.value);
+        console.log("sub");
+       
+        const response = await axios.post(
+            `http://127.0.0.1:8080/api/films/watched/`,{
+                user: user,
+                watched:{
+                    filmId: film._id,
+                    ...(e.target.group1.value>0 && {  rating: e.target.group1.value }),
+                    ...(e.target.textarea1.value.trim() && { review: e.target.textarea1.value.trim() })                   
+                } },
+                {    
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                }
+        );
+        if(response.data._id === user._id){
+            setUser(response.data)
+            setWant(false)
+            setWatched(true)
+        }
+
+    }   
+console.log(isWant, isWatched);
     return (            
         <div class="row main__container">
             <ul className=" wrapper">
                 <li class="col s5 center-align">
                     <img src={film.image} alt={film.title} class="item__poster "/>
                     <div className="control">
-                        <button class="item__want-button" onClick={handleClickWant}>Посмотрю</button>
-                        <button data-target="modal1" class="btn modal-trigger item__watched-button"  onClick={handleClickWatched} >Просмотрен</button>				
+                        <div className="wrapp__button s5">
+                            <button 
+                                class={isWant? ' btn waves-effect waves-light item__want-button active' : 'btn waves-effect waves-light item__want-button'} 
+                                onClick={handleClickWant}>Посмотрю
+                            </button>
+                            <button data-target="modal1" 
+                                class={isWatched? 'btn waves-effect waves-light modal-trigger item__watched-button active' : 'btn waves-effect waves-light modal-trigger item__watched-button'}  
+                                onClick={handleClickWatched} >Просмотрен
+                            </button>				
+                        </div> 
                         <div id="modal1" class="modal">
                             <div class="modal-content">
-                                <h4>Modal Header</h4>
-                                <p>A bunch of text</p>
+                                <form class="col s12" onSubmit={handleClickSubmit}>                                 
+                                    <div class="row">
+                                        <div class="input-field col s12">
+                                        <textarea id="textarea1" class="materialize-textarea"></textarea>
+                                        <label for="textarea1">Отзыв о фильме</label>
+                                        </div>
+                                    </div>
+                                    <div className="row radioButtons">
+                                        <h5>оценка</h5>
+                                            <div className="col s1 center-align">
+                                                <label for="0"><span>X</span></label>
+                                                <input name="group1" id="0" value="0" type="radio" checked/>
+                                                <span class ="span-after"></span>
+                                            </div>
+                                            <div className="col s1 center-align">
+                                                <label for="1"><span>1</span></label>
+                                                <input name="group1" id="1" value="1" type="radio" />
+                                                <span class ="span-after"></span>
+                                            </div>
+                                            <div className="col s1 center-align">
+                                                <label for="2"><span>2</span></label>
+                                                <input name="group1" id="2" value="2" type="radio" />
+                                                <span class ="span-after"></span>
+                                            </div>
+                                            <div className="col s1 center-align">
+                                                <label for="3"><span>3</span></label>
+                                                <input name="group1" id="3" value="3" type="radio" />
+                                                <span class ="span-after"></span>
+                                            </div>
+                                            <div className="col s1 center-align">
+                                                <label for="4"><span>4</span></label>
+                                                <input name="group1" id="4" value="4" type="radio" />
+                                                <span class ="span-after"></span>
+                                            </div>
+                                            <div className="col s1 center-align">
+                                                <label for="5"><span>5</span></label>
+                                                <input name="group1" id="5" value="5" type="radio" />
+                                                <span class ="span-after"></span>
+                                            </div>
+                                            <div className="col s1 center-align">
+                                                <label for="6"><span>6</span></label>
+                                                <input name="group1" id="6" value="6" type="radio" />
+                                                <span class ="span-after"></span>
+                                            </div>
+                                            <div className="col s1 center-align">
+                                                <label for="7"><span>7</span></label>
+                                                <input name="group1" id="7" value="7" type="radio" />
+                                                <span class ="span-after"></span>
+                                            </div>
+                                            <div className="col s1 center-align">
+                                                <label for="8"><span>8</span></label>
+                                                <input name="group1" id="8" value="8" type="radio" />
+                                                <span class ="span-after"></span>
+                                            </div>
+                                            <div className="col s1 center-align">
+                                                <label for="9"><span>9</span></label>
+                                                <input name="group1" id="9" value="9" type="radio" />
+                                                <span class ="span-after"></span>
+                                            </div>
+                                            <div className="col s1 center-align">
+                                                <label for="10"><span>10</span></label>
+                                                <input name="group1" id="10" value="10" type="radio" />
+                                                <span class ="span-after"></span>
+                                            </div>
+                                        
+                                    </div>
+                                  
+                                    <div class="modal-footer">
+                                    <input  class="modal-close waves-effect btn-flat submit" type="submit" value="Сохранить"  />
+                                       
+                                               
+                                     </div>
+                                </form>           
                             </div>
-                            <div class="modal-footer">
-                                <a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a>            
-                            </div>
+                           
                         </div>
                     </div>
                 </li>

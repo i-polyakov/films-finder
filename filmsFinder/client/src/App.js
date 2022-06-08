@@ -8,15 +8,16 @@ import { useAuth } from "./hooks/auth.hook.js";
 
 
 function App() {
-  const { login, logout, session, user, isReady } = useAuth();
+  const { login, logout, setUser, session, user, isReady } = useAuth();
   const isLogin = !!session;
   const routes = useRoutes(isLogin, user);
   useEffect(() => {
     //initialize materialize
     M.AutoInit();})
+  
   return (
     <AuthContext.Provider
-      value={{ login, logout, session, user, isReady, isLogin }}
+      value={{ login, logout,setUser, session, user, isReady, isLogin }}
     >
       <BrowserRouter>{routes}</BrowserRouter>
     </AuthContext.Provider>

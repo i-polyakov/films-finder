@@ -8,7 +8,7 @@ import "./recContainer.scss";
 const RecContainer = (user) => {
   const { pathname } = useLocation();
   const { userBased, topFilms, isload, run } = useContext(RecContext);
-
+  console.log(user);
   useEffect(() => {
     run(user);
   }, [user]);

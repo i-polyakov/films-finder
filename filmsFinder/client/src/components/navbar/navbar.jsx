@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../context/auth.context";
 import "./navbar.scss";
@@ -12,6 +12,8 @@ const Navbar = () => {
         : ""
     }`
   );
+  
+
   const [searchTerm, setSearchTerm] = React.useState("");
 
   const handleChange = (event) => {

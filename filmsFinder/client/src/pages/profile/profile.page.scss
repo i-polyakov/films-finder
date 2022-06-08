@@ -1,0 +1,58 @@
+@use "../../colors/colors.scss";
+.user-container{
+    
+    display: flex ;
+    justify-content: center;
+    padding: 30px;
+    
+
+    .user-wrapper{
+        background-color: colors.$color-sb;
+        max-height: none;
+        max-width: 880px;
+        width: 100%;
+        //height: 100px;
+        display: grid ;
+        justify-content: center;
+        border-radius: 16px;
+
+        .user-list .user-info .user-stat{
+            display: flex ;
+            justify-content: center;
+          
+        }
+        .films-stat{
+            border-radius: 8px;
+            margin: 10px;
+            padding: 10px;
+            background-color:colors.$color-bg;
+        }
+        .user-stat { 
+            display: flex;
+            justify-content: center;
+           
+        }
+       
+        .btn{
+            margin: 10px;
+        }
+        
+        .user-login{
+
+            display: flex;
+        }
+        .user-about{
+            display: flex ;
+            justify-content: center;
+        }
+        
+        .modal-content{
+            display: flex;
+           }
+        .modal *{ 
+            color: inherit;
+            background-color: colors.$color-bg;
+        }
+    }
+
+}

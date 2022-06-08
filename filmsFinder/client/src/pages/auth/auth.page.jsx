@@ -16,7 +16,7 @@ const AuthPage = () => {
   const { login } = useContext(AuthContext);
   const changeHandler = (event) => {
     setForm({ ...form, [event.target.name]: event.target.value });
-    console.log(form);
+    //console.log(form);
   };
   const registrationHandler = async () => {
     try {
@@ -29,7 +29,9 @@ const AuthPage = () => {
           },
         }
       );
-      login(response.data.session, response.data.user);
+      //console.log(response.data);
+      loginHandler()
+     // login(response.data.data.session, response.data.data.user);
       console.log(response);
     } catch (error) {
       console.log(error);
@@ -46,7 +48,7 @@ const AuthPage = () => {
           },
         }
       );
-      console.log(response);
+      //console.log(response.data);
       login(response.data.session, response.data.user);
     } catch (error) {
       console.log(error);

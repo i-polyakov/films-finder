@@ -56,7 +56,7 @@ app.use(bodyParser.json())
 //app.use(http_logs);
 app.use('/',AuthRouter);
 app.use('/api/films/',FilmsRouter);
-app.use('/',UsersRouter);
+app.use('/api',UsersRouter);
 app.use('/api',MainRouter);
 
 app.use((error, req, res, next) => {

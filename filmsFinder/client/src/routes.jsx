@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React, { Suspense, useEffect } from "react";
 import {
   useSearchParams,
   Route,
@@ -17,11 +17,19 @@ import RecContextProvider from "./context/rec.context";
 import SearchContextProvider from "./context/search.context";
 import AuthPage from "./pages/auth/auth.page";
 import FilmPage from "./pages/film/film.page";
+import ProfilePage from "./pages/profile/profile.page";
 
-export const useRoutes = (isLogin, user) => {
-  const url = `/${user ? user.login : ""}`;
-
-  const [searchResults, setSearchResults] = React.useState([]);
+export const useRoutes = (isLogin, user, setUser) => {
+  
+  //const url = `/${user ? user.login : ""}`;
+ const [url, setUrl] = React.useState("/");
+  useEffect(() => {
+    if(user){
+      //console.log(user); 
+      setUrl(`/${user ? user.login : "/"}`)
+    }
+  });
+ 
   //let navigate = useNavigate();
 
   //navigate(event.target.action);
@@ -41,10 +49,7 @@ export const useRoutes = (isLogin, user) => {
               }
             >
               <Routes>
-                <Route
-                  path="*"
-                  element={<Navigate to={url + "/want"} replace />}
-                />
+                <Route path="/auth/*" element={<Navigate to={"/"+user.login+"/want"} replace />} />
                 <Route
                   path={url + "/main"}
                   element={<RecContainer user={user} />}
@@ -58,10 +63,14 @@ export const useRoutes = (isLogin, user) => {
                   path={url + "/watched"}
                   element={<Container user={user} />}
                 />
+                <Route
+                  path={url + "/profile"}
+                  element={<ProfilePage />}
+                />
                  <Route
                   path={"/film/:id"}
                   element={<FilmPage user={user} />}
-                />
+                />    
               </Routes>
             </Suspense>
           </SearchContextProvider>

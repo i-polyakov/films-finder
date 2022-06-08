@@ -2,7 +2,7 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import "./film.scss";
 export default function Film({ info, isSearch }) {
-  console.log(info);
+  //console.log(info);
   if (info.filmId) 
     info = info.filmId;
   return (

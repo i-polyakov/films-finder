@@ -9,7 +9,7 @@ function distCos(fUR, sUR) {//(firstUserRatings, secondUserRatings) dict
             isfind = sUR.find((item) => {           
                 return String(item.filmId) == String(elem.filmId);
             });   
-            if (isfind) 
+            if (isfind && elem.rating && isfind.rating)
                 d += elem.rating * isfind.rating;                
         });
         return d
@@ -154,6 +154,9 @@ function recommendedFilms (curentUser, allUsers, countBestSimilars, countRecomme
     //исключить фильмы которые curentUser смотрел
     curentUser.watched.forEach(element => {
         delete sum[String(element.filmId)]
+    });
+    curentUser.want.forEach(element => {
+        delete sum[String(element)]
     });
 
     recFilms = []

@@ -10,7 +10,7 @@ class FilmsController {
       if(film)
         return res.json(film)
       
-      const response = ""//await imdb.getMovie(req.params.id) 
+      const response = await imdb.getMovie(req.params.id) 
       if(response.errorMessage)
         return res.json({messages: response.errorMessage});
       response.save()
@@ -60,14 +60,15 @@ class FilmsController {
 
   async addWantFilm(req, res) {
     try {
-      console.log(req.body.user);
+      //console.log(req.body.user);
       //удалить из watched
-      await User.findByIdAndUpdate(req.body.user.id, {
+      await User.findByIdAndUpdate(req.body.user._id, {
         $pull: {watched:{filmId: req.body.want}}
       }, { safe: true, multi:true })
       //добавить
-      const user = await User.findByIdAndUpdate(req.body.user.id, {$addToSet: req.body},{new: true})
-      return res.json(user.want)
+      const user = await User.findByIdAndUpdate(req.body.user._id, {$addToSet: {want: req.body.want}},{new: true})
+      //console.log(user);
+      return res.json(user)
     } catch (error) {
       console.log(error);
     }  
@@ -75,7 +76,9 @@ class FilmsController {
 
   async delWantFilm(req, res) {
     try {
-      const user = await User.findByIdAndUpdate(req.body.user.id, {$pull: {want: req.params.id}},{new: true})
+      //console.log(req.body);
+      const user = await User.findByIdAndUpdate(req.body.user._id, {$pull: {want: req.params.id}},{new: true})
+      //console.log(user);
       return res.json(user)
     } catch (error) {
       console.log(error);
@@ -84,8 +87,9 @@ class FilmsController {
 
   async addWatchedFilm(req, res) {
     try {
-      const response = await User.findOne({id: req.user.id, watched:{ filmId: req.body.watched.filmId}})
-      console.log(response);
+      //если фильм уже был добавлен
+      const response = await User.findOne({ _id:req.body.user._id, "watched.filmId": req.body.watched.filmId})
+      //console.log(response);
       if(response)
         return res.json(response)
 
@@ -93,10 +97,11 @@ class FilmsController {
       // if(!inWant)
       //   return res.json( await User.findByIdAndUpdate(req.user.id, {$addToSet: req.body},{new: true}))
       
-      const user = await User.findByIdAndUpdate(req.user.id, {
+      const user = await User.findByIdAndUpdate(req.body.user._id, {
         $pull: {want: req.body.watched.filmId},
-        $addToSet: req.body
+        $addToSet: {watched: req.body.watched}
       },{new: true})
+      console.log(user);
       return res.json(user)    
       
     } catch (error) {
@@ -105,7 +110,7 @@ class FilmsController {
   }
   async delWatchedFilm(req, res) {
     try {
-      const user = await User.findByIdAndUpdate(req.user.id, {
+      const user = await User.findByIdAndUpdate(req.body.user._id, {
         $pull: {watched:{filmId: req.params.id}}
       }, { safe: true, multi:true, new: true })
       return res.json(user)
