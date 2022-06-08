@@ -56,7 +56,7 @@ const ProfilePage = () => {
                         <div class="modal-content">	
                             <h3>Подписки</h3>
                             <div className="user-following">
-                                <UserList user={user}/>
+                                <UserList list={user.following}  type="following"/>
                             </div>                          
                         </div>
                         <div class="modal-footer">
@@ -67,7 +67,7 @@ const ProfilePage = () => {
                         <div class="modal-content">	
                             <h3>Подписчики</h3>
                             <div className="user-followers">
-                            <UserList user={user}/>
+                            <UserList list={user.followers} type="followers"/>
                             </div>                          
                         </div>
                         <div class="modal-footer">

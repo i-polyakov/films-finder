@@ -8,10 +8,10 @@ router.get("/users/:roleName", isAdminAuthenticated, UsersController.getUsersByR
 router.put("/changeRole/:login", isAdminAuthenticated, UsersController.updateUser);//изменить уровень доступа  
 router.delete("/deleteUser/:login", isAdminAuthenticated, UsersController.deleteUser);//удалить пользователя  
 
-router.put("/users/follow/:login", isAuthenticated, UsersController.followUser)//подписаться на пользователя
-router.delete("/users/follow/:login", isAuthenticated, UsersController.unFollowUser)//отписаться 
-router.get("/users/:login/following", isAuthenticated, UsersController.getFollowing);//подписки пользователя
-router.get("/users/:login/ollowers", isAuthenticated, UsersController.getFollowers);//подписчики пользователя
+router.put("/users/follow/:login",  UsersController.followUser)//подписаться на пользователя
+router.delete("/users/follow/:login", UsersController.unFollowUser)//отписаться 
+router.get("/users/:login/following",  UsersController.getFollowing);//подписки пользователя
+router.get("/users/:login/followers",  UsersController.getFollowers);//подписчики пользователя
 
 function isAuthenticated(req, res, next) {
     if (req.isAuthenticated()) 

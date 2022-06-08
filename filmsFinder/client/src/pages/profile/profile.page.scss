@@ -1,6 +1,6 @@
 @use "../../colors/colors.scss";
 .user-container{
-    
+   
     display: flex ;
     justify-content: center;
     padding: 30px;
@@ -11,7 +11,9 @@
         max-height: none;
         max-width: 880px;
         width: 100%;
-        //height: 100px;
+        h1,h2,h3,h4,h5,h6{
+            font-weight: 300 !important;
+        }
         display: grid ;
         justify-content: center;
         border-radius: 16px;
@@ -45,9 +47,35 @@
             display: flex ;
             justify-content: center;
         }
-        
+        .user-following, .user-followers{
+            font-size: 20px;
+            ul{
+                display: flex;
+                justify-content: center ;
+                li{
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;    
+                    .link{
+                        
+                        padding: 2px 15px 5px 15px;
+                        margin: 5px;
+                        display: flex;
+                        background-color: colors.$color-sb;
+                        border-radius: 15px;
+                    }
+                    .link:hover{
+                        //transition color
+                    }
+                    //display: inline-flex;
+                }
+            }
+        }
         .modal-content{
-            display: flex;
+            //display: flex;
+            h3{
+                display: block
+            }
            }
         .modal *{ 
             color: inherit;

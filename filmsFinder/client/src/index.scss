@@ -1,7 +1,7 @@
 @use "./colors/colors.scss";
 @import "~materialize-css/dist/css/materialize.min.css";
 body {
-  font-weight: 300;
+  font-weight: 300 !important;
   color: colors.$color-text;
   background-color: colors.$color-bg;
   margin: 0;

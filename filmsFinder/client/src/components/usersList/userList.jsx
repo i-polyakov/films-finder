@@ -1,22 +1,54 @@
-import React, { useEffect } from 'react';
+import axios from 'axios';
+import React, { useContext, useEffect, useState } from 'react';
+import { NavLink } from 'react-router-dom';
+import { AuthContext } from '../../context/auth.context';
 
-const UserList = ({user}) => {
+const UserList = ({ type}) => {
 
-  const   someUser= ['someUser','someUser','someUser','someUser','someUser']
-    useEffect(() => {
-        
-       
-    }, [user]);
-    let u
-    //if (user.following && user.following > 0) {
-        u = someUser.map((elem) => {
-         
-          return <li className="col s12 user">some user</li>;
-        });
-     // }
+  const [list, setList] = useState();
+  const {user} = useContext(AuthContext)
+
+  const setUsersList = async() => {
+    try {
+      if(type === "following"){
+        const response = await axios.get(
+          `http://127.0.0.1:8080/api/users/${user.login}/following`,{    
+          headers: {
+              "Content-Type": "application/json"
+          }}
+        );
+        setList(response.data)
+
+      }
+      else if(type === "followers"){
+        const response = await axios.get(
+          `http://127.0.0.1:8080/api/users/${user.login}/followers`,{    
+          headers: {
+              "Content-Type": "application/json"
+          }}
+        );
+        setList(response.data)
+
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }      
+  useEffect(()=>{
+    setUsersList();
+  }, [user]);
+  console.log(list);
+    let listItems;
+  if (list && list.length > 0) {
+      
+      listItems = list.map((elem) => {
+        //console.log(elem);
+        return <li className="s12 col user "><NavLink to="" className="link">{elem.login}</NavLink></li>;
+      });
+    }
     return (
         <ul className="s12 row">
-            {u}
+            {listItems}
         </ul>
     );
 }
