@@ -13,10 +13,9 @@ const FilmPage = () => {
     const [film, setfilm] = useState({})
 
     const { user, setUser } = useContext(AuthContext);
-
-    const { pathname } = useLocation();
     const { films, isload, run } = useContext(FilmContext);
-    console.log(film._id)
+    const { pathname } = useLocation();
+   
     const getGenresRu = (genres) => {
         if (genres){        
             setGenresRu([])    

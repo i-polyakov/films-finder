@@ -41,11 +41,16 @@ class UsersController {
     }
     async followUser(req, res) {
         try {
+            console.log(req.body);
             const fUser = await User.findOne({login: req.params.login})
             if(!fUser)
                 return res.json({messages: 'user not found!'})  
-            const user = await User.findByIdAndUpdate(req.user.id, {
-                $addToSet: {following: fUser.id}
+            const user = await User.findByIdAndUpdate(req.body.user._id, {
+                $addToSet: {following: fUser._id}
+            },{new: true})
+
+            await User.findByIdAndUpdate(fUser._id, {
+                $addToSet: {followers: req.body.user._id}
             },{new: true})
             return res.json(user)
         } catch (error) {
@@ -57,8 +62,11 @@ class UsersController {
             const fUser = await User.findOne({login: req.params.login})
             if(!fUser)
                 return res.json({messages: 'user not found!'})  
-            const user = await User.findByIdAndUpdate(req.user.id, {
-                $pull: {following: fUser.id}
+            const user = await User.findByIdAndUpdate(req.body.user._id, {
+                $pull: {following: fUser._id}
+            },{new: true})
+             await User.findByIdAndUpdate(fUser._id, {
+                $pull: {followers: req.body.user._id}
             },{new: true})
             return res.json(user)
         } catch (error) {

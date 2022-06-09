@@ -1,23 +1,58 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import UserList from '../../components/usersList/userList';
 import { AuthContext } from '../../context/auth.context';
 
 import "./profile.page.scss"
 const ProfilePage = () => {
     const { user, setUser } = useContext(AuthContext);
+    const [ updateUser, setUpdateUser ] = useState({});
+
     const handleClickFollowing = async (e) => {
         var elems = document.querySelectorAll('.modal');
-        var instances = M.Modal.init(elems);
+        const options = {
+            onCloseStart: function(modal, trigger){
+                console.log("onCloseStart");
+                //console.log(updateUser&& updateUser._id);
+                if(updateUser&& updateUser._id){
+                    console.log("onCloseStart, updateUser");
+                    setUser(updateUser)
+                }},
+            onCloseEnd: function(modal, trigger){
+                console.log("onCloseEnd");
+            }
+        }
+        var instances = M.Modal.init(elems,options);
         console.log("handle modal2");       
     }
     const handleClickFollowers = async (e) => {
         var elems = document.querySelectorAll('.modal');
-        var instances = M.Modal.init(elems);
+        const options = {
+            onCloseStart: function(modal, trigger){
+                console.log("onCloseStart");
+                //console.log(updateUser&& updateUser._id);
+                if(updateUser&& updateUser._id){
+                    console.log("onCloseStart, updateUser");
+                    setUser(updateUser)
+                }},
+            onCloseEnd: function(modal, trigger){
+                console.log("onCloseEnd");
+            }
+        }
+        var instances = M.Modal.init(elems,options);
         console.log("handle modal3");       
     }
-    useEffect(() => {  
-    }, [user]);
-   console.log(user);
+    useEffect(() => { 
+        console.log("updateUser");
+        console.log(user.following);
+        if (updateUser) {
+            console.log(updateUser.following);
+        }
+        
+    }, [user,updateUser]);
+    // const updateUser = (newUser) =>{
+    //     setUser(newUser)
+    // }
+   //console.log(user);
     return (
         <div class ="user-container">
             <div className="user-wrapper  center-align">
@@ -55,8 +90,8 @@ const ProfilePage = () => {
                     <div id="modal2" class="modal">
                         <div class="modal-content">	
                             <h3>Подписки</h3>
-                            <div className="user-following">
-                                <UserList list={user.following}  type="following"/>
+                            <div className="user-following-list">
+                                <UserList list={user.following} OnUserChange = {setUpdateUser} type="following"/>
                             </div>                          
                         </div>
                         <div class="modal-footer">
@@ -66,8 +101,8 @@ const ProfilePage = () => {
                     <div id="modal3" class="modal">
                         <div class="modal-content">	
                             <h3>Подписчики</h3>
-                            <div className="user-followers">
-                            <UserList list={user.followers} type="followers"/>
+                            <div className="user-followers-list">
+                            <UserList list={user.followers} OnUserChange = {setUpdateUser} type="followers"/>
                             </div>                          
                         </div>
                         <div class="modal-footer">
