@@ -82,7 +82,7 @@
     }
    .wrapp__button{
      display: flex;
-     justify-content: space-around;
+     justify-content: space-evenly;
     .item__want-button, .item__watched-button{
       background-color: colors.$color-sb ;
   }
@@ -109,4 +109,10 @@ table.striped > tbody > tr:nth-child(odd) {
     //display: inline-blocks;
     //height: 52.5px;
     max-width: 350px;
+}
+hr{
+  width: 100%;
+}
+.stat, .overview, .reviews{
+  width: 100%;
 }

@@ -170,7 +170,7 @@ console.log(isWant, isWatched);
                                         <h5>оценка</h5>
                                             <div className="col s1 center-align">
                                                 <label for="0"><span>X</span></label>
-                                                <input name="group1" id="0" value="0" type="radio" checked/>
+                                                <input name="group1" id="0" value="0" type="radio" />
                                                 <span class ="span-after"></span>
                                             </div>
                                             <div className="col s1 center-align">
@@ -236,7 +236,7 @@ console.log(isWant, isWatched);
                            
                         </div>
                     </div>
-                </li>
+                </li>            
                 <li class="col s7">
                     <div class="item__about-Film">
                         <div class="row__title truncate">{film.title} </div>
@@ -278,9 +278,37 @@ console.log(isWant, isWatched);
                         </tbody>
                     </table>
                 </li>
+                <hr/>
+                <div className="overview">
+                    <div className="heading">
+                        Обзор
+                    </div>
+                    <div className="text">
+                        {film.plot}
+                    </div>     
+                </div>  
+                <hr/>
+                <div className="stat">
+                    <div className="heading">
+                        Рейтинг
+                    </div>
+                    <div className="imdb-rating">
+                    {film&&film.imdb?film.imdb.rating:"ne"}
+                    </div>
+                   
+                </div> 
+                <hr/>
+                <div className="reviews">
+                    <div className="heading">
+                        Отзывы
+                    </div>
+                    <div className="imdb-rating">
+                    {film&&film.imdb?film.imdb.rating:"ne"}
+                    </div>
+                   
+                </div> 
                
-                    <div className="rating col s7"></div>
-               
+
             </ul>
            
             {/* <div class="column">

@@ -6,7 +6,7 @@ export const FilmContext = createContext();
 const FilmContextProvider = (props) => {
  
   const [films, setFilms] = useState([]);
-  const [isload, setIsLoad] = useState(true);
+  const [isload, setIsLoad] = useState(false);
   //const newsSession = session.cookie
   ///newSession["passport"] = session.passport
   const run = async (location) => {
