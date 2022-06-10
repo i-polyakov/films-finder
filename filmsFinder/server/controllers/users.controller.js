@@ -18,6 +18,17 @@ class UsersController {
             console.log(error);
         }
     }
+
+    async getUser(req, res) {
+        try {
+            const user = await User.findOne(
+                {login: req.params.login}, '_id login want watched profile')
+            return res.json(user)
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     async updateUser(req, res) {
         try {
             const user = await User.findOneAndUpdate(

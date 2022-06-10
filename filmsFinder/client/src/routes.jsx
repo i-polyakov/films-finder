@@ -12,6 +12,7 @@ import Navbar from "./components/navbar/navbar";
 import RecContainer from "./components/recContainer/recContainer";
 import Search from "./components/search/search";
 import Sidebar from "./components/sidebar/sidebar";
+import User from "./components/user/user";
 import FilmContextProvider from "./context/film.context";
 import RecContextProvider from "./context/rec.context";
 import SearchContextProvider from "./context/search.context";
@@ -20,12 +21,12 @@ import FilmPage from "./pages/film/film.page";
 import ProfilePage from "./pages/profile/profile.page";
 
 export const useRoutes = (isLogin, user, setUser) => {
-  
+ 
   //const url = `/${user ? user.login : ""}`;
  const [url, setUrl] = React.useState("/");
   useEffect(() => {
-    if(user){
-      //console.log(user); 
+    if(user&&user._id){
+      console.log(user); 
       setUrl(`/${user ? user.login : "/"}`)
     }
   });
@@ -62,6 +63,14 @@ export const useRoutes = (isLogin, user, setUser) => {
                 <Route
                   path={url + "/watched"}
                   element={<Container user={user} />}
+                />
+                 <Route
+                  path={"/:login/want"}
+                  element={<User/>}
+                />
+                 <Route
+                  path={"/:login/watched"}
+                  element={<User/>}
                 />
                 <Route
                   path={url + "/profile"}

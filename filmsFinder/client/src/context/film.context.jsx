@@ -4,8 +4,7 @@ import { AuthContext } from "./auth.context";
 export const FilmContext = createContext();
 
 const FilmContextProvider = (props) => {
-  const { login, session } = useContext(AuthContext);
-  //console.log(localStorage.getItem("userData"));
+ 
   const [films, setFilms] = useState([]);
   const [isload, setIsLoad] = useState(true);
   //const newsSession = session.cookie

@@ -1,12 +1,14 @@
 import axios from 'axios';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { AuthContext } from '../../context/auth.context';
 
-const UserList = ({ type, OnUserChange }) => {
+const UserList = ({ type, OnUserChange, updateUser }) => {
+  const [localUser, setlocalUser] = useState();
   //const [isFollowing, setIsFollowing] = useState(false);
   const [list, setList] = useState();
-  const {user} = useContext(AuthContext)
+  const [listItems, setListItems] = useState();
+  const {user, setUser} = useContext(AuthContext)
 
   const setUsersList = async() => {
     try {
@@ -17,7 +19,7 @@ const UserList = ({ type, OnUserChange }) => {
               "Content-Type": "application/json"
           }}
         );
-        setList(response.data)
+        setList( response.data)
 
       }
       else if(type === "followers"){
@@ -30,22 +32,35 @@ const UserList = ({ type, OnUserChange }) => {
         setList(response.data)
 
       }
+      //console.log("test1");
     } catch (error) {
       console.log(error);
     }
-  }      
+  }   
+  // useEffect(()=>{
+  //   console.log(user);
+  //   setUsersList();
+  //   console.log("test2");
+  // }, []);
   useEffect(()=>{
-    console.log("setuserlist");
+    //console.log("setlist +"+ type);
     setUsersList();
+    //console.log("setlocalUser");
+    setlocalUser(user)
+    //console.log("test2");
   }, [user]);
   const isFollowing = (elem)=>{
+    //console.log(localUser);
+    if (localUser&&localUser.following) {
+      return localUser.following.find(item =>item === elem)
+    }
     return user.following.find(item =>item === elem)
   }
 
-  const handleClick =  async (elemId, elemLogin, e) => {
-    
+  const handleClick = async (elemId, elemLogin, isF, e) => {
+    //console.log("update");
       try {
-        if (isFollowing(elemId)) {
+        if (isF) {
           const response = await axios.delete(
             `http://127.0.0.1:8080/api/users/follow/${elemLogin}`,{    
               headers: {
@@ -53,29 +68,45 @@ const UserList = ({ type, OnUserChange }) => {
               },
               data:{user: user}
           });
-          if(user._id === response.data._id)
+          if(user._id === response.data._id){
+            //setList(response.data.following)
+            setlocalUser(response.data)
             OnUserChange(response.data)
+          }
+          
         }
         else{
           const response = await axios.put(
             `http://127.0.0.1:8080/api/users/follow/${elemLogin}`,{    
              user: user
             });          
-            if(user._id === response.data._id)
-              OnUserChange(response.data)
-        }
-        
+            if(user._id === response.data._id){
+              //setList(response.data.following)
+              setlocalUser(response.data)
+              OnUserChange(response.data)             
+            }
+             
+        }  
+            
       } catch (error) {
         console.log(error);
       }
   }
- 
-  let listItems;
-  if (list && list.length > 0) {     
-      listItems = list.map((elem) => {
+useEffect(() => {
+  setlocalUser({})
+  
+}, []);
+ useEffect(() => {
+   //setUser(localUser)
+  //console.log(list);
+  if (list && list.length > 0) {
+     
+      setListItems( list.map((elem) => {
+        let isF = isFollowing(elem._id)
+        console.log(elem);
         return <tr class= "">
             <td className="user">
-              <NavLink to="" className=" link">
+              <Link to={`/${elem.login}/want`} onClick={()=>{localUser._id?setUser(localUser):""}} elem={elem} className=" link">
                <div className="avatar"> 
                 <img  
                     alt="avatar"  
@@ -84,17 +115,19 @@ const UserList = ({ type, OnUserChange }) => {
                     height="30"/> 
                 {elem.login}
                 </div>
-              </NavLink>
+              </Link>
             </td>
             <td className='follow-button'> 
               <button
-                class={isFollowing(elem._id)? 'btn user-follow active-btn' : 'btn user-follow'} 
-                onClick={(e)=>handleClick(elem._id,elem.login, e)}>{isFollowing(elem._id)?"Подписан":"Подписаться"}
+                class={isF? 'btn user-follow' : 'btn user-follow active-btn'} 
+                onClick={(e)=>handleClick(elem._id,elem.login,isF, e)}>{isF?"Подписан":"Подписаться"}
               </button>
             </td>
           </tr>;
-      });
+      })
+      )
     }
+ }, [list,localUser]);
     return ( 
       <table class='centered info'>                    
       <tbody>

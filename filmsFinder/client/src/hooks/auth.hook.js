@@ -5,6 +5,9 @@ export const useAuth = () => {
   const [user, setUser] = useState(null);
   const [isReady, setIsReady] = useState(false);
 
+  useEffect(() => {
+    console.log("setUser");
+  }, [user]);
   const login = useCallback((session, user) => {
    
     setSession(session);
@@ -29,5 +32,5 @@ export const useAuth = () => {
     }
     setIsReady(true);
   }, []);
-  return { login, logout,setUser, session, user, isReady };
+  return { login, logout, setUser, session, user, isReady };
 };

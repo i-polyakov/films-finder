@@ -3,14 +3,14 @@ import { NavLink } from "react-router-dom";
 import { AuthContext } from "../../context/auth.context";
 import "./sidebar.scss";
 
-const Sidebar = (user) => {
+const Sidebar = ({user}) => {
   return (
     <div className="wrapp">
       <div className="side_bar">
         <ul>
           <li>
             <NavLink
-              to={"/" + user.user.login + "/main"}
+              to={"/" + user.login + "/main"}
               className="valign-wrapper"
             >
               <img src="/icons/home-page.svg" width="20" height="20" />
@@ -19,7 +19,7 @@ const Sidebar = (user) => {
           </li>
           <li>
             <NavLink
-              to={"/" + user.user.login + "/want"}
+              to={"/" + user.login + "/want"}
               className="valign-wrapper"
             >
               <img src="/icons/watch.svg" width="20" height="20" />
@@ -28,7 +28,7 @@ const Sidebar = (user) => {
           </li>
           <li>
             <NavLink
-              to={"/" + user.user.login + "/watched"}
+              to={"/" + user.login + "/watched"}
               className="valign-wrapper"
             >
               <img
@@ -42,7 +42,7 @@ const Sidebar = (user) => {
           </li>
           <li>
             <NavLink
-              to={"/" + user.user.login + "/profile"}
+              to={"/" + user.login + "/profile"}
               className="valign-wrapper"
             >
               <img src="/icons/profile.svg" width="20" height="20" />
@@ -51,7 +51,7 @@ const Sidebar = (user) => {
           </li>
           <li>
             <NavLink
-              to={"/" + user.user.login + "/about"}
+              to={"/" + user.login + "/about"}
               className="valign-wrapper"
             >
               <img src="/icons/About.svg" width="20" height="20" />О сервисе
