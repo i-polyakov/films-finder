@@ -3,7 +3,7 @@ import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../../context/auth.context';
 
-const UserList = ({ type, OnUserChange, updateUser }) => {
+const UserList = ({ type, OnUserChange, updateUser, value}) => {
   const [localUser, setlocalUser] = useState();
   //const [isFollowing, setIsFollowing] = useState(false);
   const [list, setList] = useState();
@@ -12,6 +12,7 @@ const UserList = ({ type, OnUserChange, updateUser }) => {
 
   const setUsersList = async() => {
     try {
+      console.log(type);
       if(type === "following"){
         const response = await axios.get(
           `http://127.0.0.1:8080/api/users/${user.login}/following`,{    
@@ -30,7 +31,15 @@ const UserList = ({ type, OnUserChange, updateUser }) => {
           }}
         );
         setList(response.data)
-
+      }
+      else if(type === "search"){
+        const response = await axios.post(
+          "http://127.0.0.1:8080/api/users",{ login: value },{headers: {
+            "Content-Type": "application/json"
+        }}
+           
+        );
+        setList(response.data)
       }
       //console.log("test1");
     } catch (error) {
@@ -48,7 +57,7 @@ const UserList = ({ type, OnUserChange, updateUser }) => {
     //console.log("setlocalUser");
     setlocalUser(user)
     //console.log("test2");
-  }, [user]);
+  }, [user,value]);
   const isFollowing = (elem)=>{
     //console.log(localUser);
     if (localUser&&localUser.following) {
@@ -103,7 +112,7 @@ useEffect(() => {
      
       setListItems( list.map((elem) => {
         let isF = isFollowing(elem._id)
-        console.log(elem);
+        //console.log(elem);
         return <tr class= "">
             <td className="user">
               <Link to={`/${elem.login}/want`} onClick={()=>{localUser._id?setUser(localUser):""}} elem={elem} className=" link">
@@ -118,10 +127,10 @@ useEffect(() => {
               </Link>
             </td>
             <td className='follow-button'> 
-              <button
+             { elem.login!=user.login?<button
                 class={isF? 'btn user-follow' : 'btn user-follow active-btn'} 
                 onClick={(e)=>handleClick(elem._id,elem.login,isF, e)}>{isF?"Подписан":"Подписаться"}
-              </button>
+              </button>:""}
             </td>
           </tr>;
       })
@@ -131,7 +140,7 @@ useEffect(() => {
     return ( 
       <table class='centered info'>                    
       <tbody>
-        {listItems}
+        {listItems?listItems:"Не найдено!"}
       </tbody>
   </table>
        

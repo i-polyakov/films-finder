@@ -60,7 +60,7 @@ const AuthPage = () => {
         <Routes>
           <React.Fragment>
             <Route
-              path="/login"
+              path=""
               element={
                 <Login
                   loginHandler={loginHandler}
@@ -69,7 +69,7 @@ const AuthPage = () => {
               }
             />
             <Route
-              path="/registration"
+              path="/auth/registration"
               element={
                 <Registration
                   registrationHandler={registrationHandler}

@@ -4,7 +4,8 @@
     padding: 30px;
     display: flex ;
     justify-content: center;
-     
+    //overflow: s;
+    
     .wrapper{
         li:hover{
           background-color: inherit;
@@ -94,6 +95,9 @@
     border-bottom: 2px solid rgba(65, 65, 65, 1);
     //border-color: aliceblue;
 }
+.info tr:last-child{
+  border: 0;
+}
 .row .col{
     padding: 0  ;
 } 
@@ -114,5 +118,49 @@ hr{
   width: 100%;
 }
 .stat, .overview, .reviews{
+  .heading{
+    font-size: 20px;
+    margin: 0 0 10px 10px;
+  }
+  .rating, .user-review{
+   
+    min-width: 13%;
+    background-color: colors.$color-sb;
+    margin: 5px;
+    border-radius: 5px;
+    .rating-title{
+     // padding: 0 40px;
+    }
+    .rating-count{
+     
+    }
+  }
   width: 100%;
+}
+
+.reviews{
+    // .heading{
+    //   width: 100%;
+    //   display: inline-block;
+    // }
+    // display: flex;
+    // justify-items: left;
+  .user-review{
+    max-width: 100%;
+ // justify-self: left;
+    .user-login{
+      font-size: 15px;
+      display: flex;
+      justify-content: space-between;
+      margin: 5px;
+      margin-left: 10px;
+      .user-rating{
+      
+        margin-right: 10px;
+        }
+    }
+    .review{
+      padding: 10px;
+    }
+  }
 }

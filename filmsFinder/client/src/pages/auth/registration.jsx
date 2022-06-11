@@ -37,7 +37,7 @@ const Registration = React.memo(({ changeHandler, registrationHandler }) => {
             >
               Зарегистрироваться
             </button>
-            <Link className="btn-outline btn-reg" to="/auth/login">
+            <Link className="btn-outline btn-reg" to="/">
               Есть аккаунт?
             </Link>
           </div>

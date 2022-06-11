@@ -1,15 +1,17 @@
 const User = require("../models/user.js");
 
 class UsersController {
-    //-----------admin----------//
+   
     async getUsersByLogin(req, res) {  //search
-        try {      
+        try {   
+            console.log("qqqq");   
             const users = await User.find({login: {$regex: req.body.login, $options: 'ix'} })
             return res.json(users)
         } catch (error) {
             console.log(error);
         }
     }
+     //-----------admin----------//
     async getUsersByRole(req, res) {  //search
         try {
             const users = await User.find({role: req.body.role })

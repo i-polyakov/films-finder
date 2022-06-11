@@ -9,6 +9,10 @@ import { AuthContext } from '../../context/auth.context';
 const FilmPage = () => {
     const [isWant, setWant] = useState();
     const [isWatched, setWatched] = useState();
+    const [rating, setRating] = useState()
+    const [stat, setStat] = useState({})
+    const [reviews, setReviews] = useState([])
+    const [sortedReviews, setSortedReviews] = useState([])
     const [genresRu, setGenresRu] = useState([])
     const [film, setfilm] = useState({})
 
@@ -29,31 +33,85 @@ const FilmPage = () => {
             })
         }     
     }
-  
+    const getStat = async (film) =>{
+        //console.log("getStat");
+        const response = await axios.get(
+            `http://127.0.0.1:8080/api/films/film/stat/${film.imdb.id}`,{    
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }
+        );
+        setStat(response.data)   
+    }
+    const getReviews = async (film) =>{
+        //console.log("getReviews");
+        //console.log(film);
+        const response = await axios.get(
+            `http://127.0.0.1:8080/api/films/film/reviews/${film.imdb.id}`,{    
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }
+        );
+        //console.log(response.data);
+        setReviews(response.data)   
+    }
+
+    useEffect(() => {
+        const sorted = []
+        const noFollowing = []
+
+        reviews.map(item=>{   
+            if(item.login===user.login){
+                sorted.unshift(item)
+            }
+            else if(user.following.find(elem=>String(elem)===String(item._id)))               
+                sorted.push(item)      
+            else            
+                noFollowing.push(item)
+        })
+        setSortedReviews(sorted.concat(noFollowing))  
+        // setSortedReviews(reviews.sort((a,b)=>{
+        //     if(a.login===user.login){
+        //         return -2
+        //     }         
+        //     else if(user.following.find(item=>String(item)===String(a._id)))               
+        //         return -1         
+        //     else            
+        //         return 1
+        //     }))  
+    }, [reviews])
+    
     useEffect(() => {
       run(pathname);
     }, [pathname]);
 
     useEffect(() => {
-        if(films.data.genres){       
+        if(films.data&&films.data.genres){       
             setfilm(films.data)
-            getGenresRu( films.data.genres)                
+            getGenresRu( films.data.genres)     
+            getStat(films.data)          
+            getReviews(films.data)    
         }
     },[films])
     
     useEffect(() => {
         setWatched(false)
         setWant(false)
-       
+        setRating(null) 
+
         if(user.watched)
         for (var element of user.watched) 
-            if (element.filmId === film._id) {             
+            if (element.filmId === film._id) {    
+                setRating(element.rating)         
                 setWatched(true)
                 setWant(false)
             }
         if(user.want)
             for (var element of user.want) 
-                if (element === film._id) {           
+                if (element === film._id) {     
+                    setRating(null)               
                     setWatched(false)
                     setWant(true)
                 }         
@@ -103,6 +161,7 @@ const FilmPage = () => {
                     }
                 );
                 if(response.data._id === user._id){
+                    setRating(null)
                     setUser(response.data)
                     setWatched(false)
                 }
@@ -115,10 +174,6 @@ const FilmPage = () => {
     }
     const handleClickSubmit = async (e) => {
         e.preventDefault()
-        console.log(e.target.textarea1.value);
-        console.log(e.target.group1.value);
-        console.log("sub");
-       
         const response = await axios.post(
             `http://127.0.0.1:8080/api/films/watched/`,{
                 user: user,
@@ -134,13 +189,13 @@ const FilmPage = () => {
                 }
         );
         if(response.data._id === user._id){
+            setRating(e.target.group1.value)
             setUser(response.data)
             setWant(false)
             setWatched(true)
         }
 
     }   
-console.log(isWant, isWatched);
     return (            
         <div class="row main__container">
             <ul className=" wrapper">
@@ -170,7 +225,7 @@ console.log(isWant, isWatched);
                                         <h5>оценка</h5>
                                             <div className="col s1 center-align">
                                                 <label for="0"><span>X</span></label>
-                                                <input name="group1" id="0" value="0" type="radio" />
+                                                <input name="group1" id="0" value="0" type="radio"/>
                                                 <span class ="span-after"></span>
                                             </div>
                                             <div className="col s1 center-align">
@@ -274,37 +329,99 @@ console.log(isWant, isWatched);
                                
                            </td>             
                         </tr>
-                        
+                        <tr>
+                            <td>Возраст</td> <td>{film?film.contentRating:""}</td>             
+                        </tr>
                         </tbody>
                     </table>
                 </li>
+                <hr/>
+                <div className="stat">
+                    <div className="heading">
+                        
+                    </div>          
+                    {rating?
+                    <div className="rating col">
+                        <div className="rating-title center-align">
+                            Моя оценка
+                        </div>  
+                        <div className="rating-count center-align">
+                            {rating}
+                        </div>
+                    </div>:""}
+                    <div className="rating col">
+                        <div className="rating-title center-align">
+                            Рейтинг фильма
+                        </div>
+                        <div className="rating-count center-align">
+                            {stat.avg?stat.avg.toFixed(1):""}
+                        </div>
+                    </div>
+                    <div className="rating col">
+                        <div className="rating-title center-align">
+                            Посмотрят
+                        </div>
+                        <div className="rating-count center-align">
+                            {stat.want}
+                        </div>
+                    </div>
+                    <div className="rating col">
+                        <div className="rating-title center-align">
+                            Посмотрели
+                        </div>
+                        <div className="rating-count center-align">
+                            {stat.watched}
+                        </div>
+                    </div>
+                    <div className="rating col">
+                        <div className="rating-title center-align">
+                            Imdb
+                        </div>
+                        <div className="rating-count center-align">
+                            {film.imdb?film.imdb.rating:""}
+                        </div>
+                    </div>  
+                    <div className="rating col">
+                        <div className="rating-title center-align">
+                            Metacritic
+                        </div>
+                        <div className="rating-count center-align">
+                            {film?film.metacriticRating:""}
+                        </div>
+                    </div>  
+                   
+                </div> 
                 <hr/>
                 <div className="overview">
                     <div className="heading">
                         Обзор
                     </div>
-                    <div className="text">
+                    <div className="text ">
                         {film.plot}
                     </div>     
                 </div>  
                 <hr/>
-                <div className="stat">
-                    <div className="heading">
-                        Рейтинг
-                    </div>
-                    <div className="imdb-rating">
-                    {film&&film.imdb?film.imdb.rating:"ne"}
-                    </div>
-                   
-                </div> 
-                <hr/>
+         
                 <div className="reviews">
                     <div className="heading">
                         Отзывы
                     </div>
-                    <div className="imdb-rating">
-                    {film&&film.imdb?film.imdb.rating:"ne"}
-                    </div>
+                    {sortedReviews.map((review)=>{
+                        return<div className="user-review col">
+                            <div className="user-login">
+                                {review.login}   
+                                <div className="user-rating">
+                                    {review.rating}    
+                                </div> 
+                            </div>
+                              
+                            <div className="review">
+                                {review.review}    
+                            </div>
+                        </div>
+                    })}
+                   
+                    
                    
                 </div> 
                

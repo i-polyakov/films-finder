@@ -7,6 +7,9 @@ router.get("/film/:id", FilmsController.getFilmById)//Возвращает фи�
 router.post("/film", FilmsController.getFilmsByTitle)//Возвращает фильм по названию
 //router.get("/films", checkNotAuthenticated, FilmsController.getOrderFilms);//
 
+router.get("/film/stat/:id", FilmsController.getStatFilmById)//Возвращает cтатистику фильма по imd id
+router.get("/film/reviews/:id", FilmsController.getReviewsFilmById)//Возвращает отзывы фильма по imd id
+
 router.get("/:login/want", FilmsController.getWantFilms);//Фильмы которые юзер хочет посмотреть
 router.get("/:login/watched",FilmsController.getWatchedFilms);//Фильмы которые юзер посмотрел
 

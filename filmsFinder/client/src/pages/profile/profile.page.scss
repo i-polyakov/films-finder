@@ -90,7 +90,7 @@
                 //padding: 5px 0 5px 0;          
                 display: block;
                 text-align: center;
-                background-color: colors.$color-sb;
+                //background-color: colors.$color-sb;
               
                 .avatar{
                 
@@ -112,7 +112,7 @@
                 }
             }
         }
-        .user-following, .user-followers{
+        .user-following, .user-followers, .users-search{
             font-size: 20px;
             padding-bottom: 5px;
             ul{
@@ -128,6 +128,40 @@
             }
           
         }
+        #modal4{
+            .modal-content{
+                flex-direction: column;
+
+            }
+            .input-field{
+                form{
+                    #searchsUser{
+                        height: 50px !important;
+                        padding-left: 10px ;
+                        background-color: colors.$color-search;
+                        outline: none;
+                    }
+                    button {
+                        height: 50px !important;
+                        padding: 0 15px;
+                        background: colors.$color-text;
+                        border: none;
+                        color: colors.$color-text;
+                        
+                        img{
+                            margin: auto;
+                            background: colors.$color-text;
+                        }
+                      }
+                }
+                
+                .user-following-list{
+                    padding: 0;
+                }
+                flex-direction: column;
+                margin: auto;
+            }
+        }
         .modal-content{
             //display: flex;
             h3{
@@ -141,7 +175,7 @@
         // .open{
         //     z-index: 1019; display: block; opacity: 1; top: 10%; transform: scaleX(1) scaleY(1);
         // }
-        .modal, .open *{ 
+        .modal,.modal-fixed-footer, .open *{ 
             color: inherit;
             border-radius: 2px ;
             background-color: colors.$color-header;

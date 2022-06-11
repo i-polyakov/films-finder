@@ -4,7 +4,7 @@ const UsersController = require("../controllers/users.controller");
 
 router.get("/users/:login",  UsersController.getUser);//пользователь
 //-----------admin----------//
-router.post("/users", isAdminAuthenticated, UsersController.getUsersByLogin)//пользователи с похожим логином
+router.post("/users", UsersController.getUsersByLogin)//пользователи с похожим логином
 router.get("/users/:roleName", isAdminAuthenticated, UsersController.getUsersByRole);//вывести пользователей по роли
 
 router.put("/changeRole/:login", isAdminAuthenticated, UsersController.updateUser);//изменить уровень доступа  

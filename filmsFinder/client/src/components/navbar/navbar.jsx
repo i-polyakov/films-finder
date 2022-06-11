@@ -24,15 +24,15 @@ const Navbar = () => {
     <div className="navbar-fixed">
       <nav>
         <div className="nav-wrapper navbar">
-          <a href="#!" className="left">
+          <Link href={`${user.login}/about`} onClick = {e=>{e.preventDefault()}} className="left valign-wrapper">
             <img
               className="logo"
               src="/icons/logo.svg"
-              alt=" "
+              alt="Films finder"
               width="50"
               height="50"
-            ></img>
-          </a>
+            ></img><div className="logo-text">Films finder</div>
+          </Link>
           <div className="input-field right header__search">
             <form
               action="searching"

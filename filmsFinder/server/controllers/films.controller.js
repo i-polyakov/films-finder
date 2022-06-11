@@ -20,6 +20,85 @@ class FilmsController {
     }
   }
 
+  async getStatFilmById(req, res) { 
+    try {    
+      let film = await Film.findOne({'imdb.id': req.params.id})
+      if(!film){
+        film = await imdb.getMovie(req.params.id) 
+        if(film.errorMessage)
+          return res.json({messages: response.errorMessage});
+        film.save()
+      }
+    
+      const stat = {}
+      const users = await User.find().populate("watched.filmId")
+      let sum = 0
+      let count = 0
+      let countWatched = 0
+      let countWant = 0
+      users.forEach(user => {
+        user.want.forEach(element => {
+         
+          if(String(element) === String(film._id))
+            countWant ++                  
+        });
+        user.watched.forEach(element => {
+            if(String(element.filmId.id) === String(film._id)){
+              
+              countWatched ++
+              if (element.rating) {
+                sum += element.rating
+                count += 1
+              }
+            }            
+        });
+      });
+      stat.avg = count?sum/count: count
+      stat.watched = countWatched
+      stat.want = countWant
+      console.log (stat)
+      return res.json(stat)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  async getReviewsFilmById(req, res) { 
+    try {
+      let film = await Film.findOne({'imdb.id': req.params.id})
+      if(!film){
+        film = await imdb.getMovie(req.params.id) 
+        if(film.errorMessage)
+          return res.json({messages: response.errorMessage});
+        film.save()
+      }
+      const reviews = []
+      const users = await User.find().populate("watched.filmId")
+      let sum = 0
+      let count = 0
+      let countWatched = 0
+      let countWant = 0
+      users.forEach(user => {
+        user.watched.forEach(element => {
+            if(String(element.filmId.id) === String(film._id)){
+              reviews.push( {
+              _id:user._id,
+              login: user.login,
+              rating: element.rating,
+              review: element.review 
+              })
+            }   
+        });
+      });
+     
+      console.log (reviews)
+      return res.json(reviews)
+      
+     
+    } catch (error) {
+      console.log(error)
+    }
+  }
 //-----------user----------//
   async getFilmsByTitle(req, res) {  //search
       const title = req.body.search;

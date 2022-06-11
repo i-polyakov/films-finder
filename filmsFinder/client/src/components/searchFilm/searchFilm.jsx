@@ -5,7 +5,7 @@ import { SearchContext } from "../../context/search.context";
 import Collection from "../collection/collection";
 import "../recContainer/recContainer.scss";
 
-const Search = () => {
+const SearchFilm = () => {
   const params = useParams();
   console.log(params.search);
   const { pathname } = useLocation();
@@ -37,4 +37,4 @@ const Search = () => {
   );
 };
 
-export default Search;
+export default SearchFilm;

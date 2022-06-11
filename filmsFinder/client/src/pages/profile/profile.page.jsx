@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
+import SearchUser from '../../components/searchUser/searchUser';
 import UserList from '../../components/usersList/userList';
 import { AuthContext } from '../../context/auth.context';
 
@@ -7,14 +8,7 @@ const ProfilePage = () => {
     const { user, setUser } = useContext(AuthContext);
     const [ updateUser, setUpdateUser ] = useState();
 
-    const handleClickFollowing = async (e) => {
-        var elems = document.querySelectorAll('.modal');
-        var instances = M.Modal.init(elems,{ dismissible:false});
-
-        console.log("handle modal2");    
-
-    }
-    const handleClickFollowers = async (e) => {
+    const handleClickInitModal = async (e) => {
         var elems = document.querySelectorAll('.modal');
         var instances = M.Modal.init(elems,{ dismissible:false});
 
@@ -26,7 +20,7 @@ const ProfilePage = () => {
             console.log("CloseModal, setUpdateUser");
             setUser(updateUser)
         }}
-    
+      //  handleClickSearch
     return (
         <div class ="user-container">
             <div className="user-wrapper  center-align">
@@ -62,14 +56,18 @@ const ProfilePage = () => {
                 <div className="user-list">
                     <button data-target="modal2" 
                         class="btn waves-effect waves-light modal-trigger user-following"  
-                        onClick={handleClickFollowing} >Подписки
+                        onClick={handleClickInitModal} >Подписки
                     </button>
                     <button data-target="modal3" 
                         class="btn waves-effect waves-light modal-trigger user-followers"  
-                        onClick={handleClickFollowers} >Подписчики
+                        onClick={handleClickInitModal} >Подписчики
+                    </button>
+                    <button data-target="modal4" 
+                        class="btn waves-effect waves-light modal-trigger users-search"  
+                        onClick={handleClickInitModal} >Поиск
                     </button>
 
-                    <div id="modal2" class="modal">
+                    <div id="modal2" class="modal modal-fixed-footer">
                         <div class="modal-content">	
                             <h3>Подписки</h3>
                             <div className="user-following-list">
@@ -80,12 +78,26 @@ const ProfilePage = () => {
                             <input  class="modal-close waves-effect btn-flat submit" onClick={handleClickCloseModal} type="submit" value="Закрыть"  />                                            
                         </div>
                     </div>
-                    <div id="modal3" class="modal">
+                    <div id="modal3" class="modal  modal-fixed-footer">
                         <div class="modal-content">	
                             <h3>Подписчики</h3>
                             <div className="user-followers-list">
                             <UserList list={user.followers} OnUserChange = {setUpdateUser} type="followers"/>
                             </div>                          
+                        </div>
+                        <div class="modal-footer">
+                            <input  class="modal-close waves-effect btn-flat submit" onClick={handleClickCloseModal} type="submit" value="Закрыть"  />                                            
+                        </div>
+                    </div>
+                    <div id="modal4" class="modal modal-fixed-footer">
+                        <div class="modal-content">	
+                            <h3>Поиск</h3>
+                           
+                                <SearchUser setUpdateUser = {setUpdateUser}/>
+                           
+                            {/* <div className="user-following-list">
+                                <UserList list={user.following} OnUserChange = {setUpdateUser}  type="following"/>
+                            </div>                           */}
                         </div>
                         <div class="modal-footer">
                             <input  class="modal-close waves-effect btn-flat submit" onClick={handleClickCloseModal} type="submit" value="Закрыть"  />                                            

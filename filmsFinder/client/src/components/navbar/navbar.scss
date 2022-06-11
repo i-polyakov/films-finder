@@ -6,12 +6,31 @@
   justify-content: space-between;
   align-items: center;
 }
-
-.logo {
-  display: block;
-  margin: 0 15% 0 20px;
-  //vertical-align: middle;
+.left{
+  display: flex;
+  width: 200px ;
+  .logo {
+   
+    display: block;
+    margin-left: 10px;
+    
+    //vertical-align: middle;
+  }
+  .logo-text{
+    transition: 0.6s;
+    margin-left: 10px;
+    opacity: 0;
+   
+    font-size: 20px;
+    //display: flex;
+  }
+  .logo:hover~ .logo-text{
+    transition: 0.6s;
+    opacity: 100;
+    
+  }
 }
+
 
 body .input-field {
   font-size: 14px;
@@ -21,6 +40,8 @@ body .input-field {
     background-color: colors.$color-search;
     display: flex;
     input {
+      height: 50px !important;
+      margin: 0 !important;
       border: none;
       outline: none;
       color: colors.$color-text;
@@ -32,6 +53,8 @@ body .input-field {
   }
 
   .button {
+    height: 50px !important;
+    padding: 0 15px;
     background: colors.$color-text;
     border: none;
     color: colors.$color-text;

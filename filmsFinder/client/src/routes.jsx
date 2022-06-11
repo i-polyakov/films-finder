@@ -10,7 +10,7 @@ import {
 import Container from "./components/container/container";
 import Navbar from "./components/navbar/navbar";
 import RecContainer from "./components/recContainer/recContainer";
-import Search from "./components/search/search";
+import SearchFilm from "./components/searchFilm/searchFilm";
 import Sidebar from "./components/sidebar/sidebar";
 import User from "./components/user/user";
 import FilmContextProvider from "./context/film.context";
@@ -26,7 +26,7 @@ export const useRoutes = (isLogin, user, setUser) => {
  const [url, setUrl] = React.useState("/");
   useEffect(() => {
     if(user&&user._id){
-      console.log(user); 
+      //console.log(user); 
       setUrl(`/${user ? user.login : "/"}`)
     }
   });
@@ -50,12 +50,12 @@ export const useRoutes = (isLogin, user, setUser) => {
               }
             >
               <Routes>
-                <Route path="/auth/*" element={<Navigate to={"/"+user.login+"/want"} replace />} />
+                <Route path="/*" element={<Navigate to={"/"+user.login+"/want"} replace />} />
                 <Route
                   path={url + "/main"}
                   element={<RecContainer user={user} />}
                 />
-                <Route path={url + "/searching/:search"} element={<Search />} />
+                <Route path={url + "/searching/:search"} element={<SearchFilm />} />
                 <Route
                   path={url + "/want"}
                   element={<Container user={user} />}
@@ -63,6 +63,14 @@ export const useRoutes = (isLogin, user, setUser) => {
                 <Route
                   path={url + "/watched"}
                   element={<Container user={user} />}
+                />
+                <Route
+                  path={url + "/profile"}
+                  element={<ProfilePage  />}
+                />
+                <Route
+                  path={url + "/about"}
+                  element={123}
                 />
                  <Route
                   path={"/:login/want"}
@@ -72,10 +80,7 @@ export const useRoutes = (isLogin, user, setUser) => {
                   path={"/:login/watched"}
                   element={<User/>}
                 />
-                <Route
-                  path={url + "/profile"}
-                  element={<ProfilePage />}
-                />
+             
                  <Route
                   path={"/film/:id"}
                   element={<FilmPage user={user} />}
@@ -89,8 +94,8 @@ export const useRoutes = (isLogin, user, setUser) => {
   }
   return (
     <Routes>
-      <Route path="/auth/*" element={<AuthPage />} />
-      <Route path="/*" element={<Navigate to="/auth/login" replace />} />
+      <Route path="/*" element={<AuthPage />} />
+      {/* <Route path="/*" element={<Navigate to="/auth/login" replace />} /> */}
     </Routes>
   );
 };
