@@ -17,7 +17,7 @@ function distCos(fUR, sUR) {//(firstUserRatings, secondUserRatings) dict
     return dotProduct (fUR,sUR) / Math.sqrt(dotProduct(fUR,fUR)) / Math.sqrt(dotProduct(sUR,sUR))
 }
 // Возвращает коэффициент корреляции Пирсона между user1 и user2
-function similarUser(u1, u2){
+function PearsonCorrelationCoefficient(u1, u2){//Pearson correlation coefficient
     //список фильмов, оцененных обоими
     const filmsId = []
     //Суммы оценок фильмов
@@ -60,101 +60,119 @@ function similarUser(u1, u2){
     console.log(r);
     return n<100?r*(1+(1-r*r)/(2*(n-3))):r; 
 }
-function similarUser2(u1, u2){
-    //список фильмов, оцененных обоими
-    const filmsId = []
-    //Суммы оценок фильмов
-    sum1 = 0;
-    sum2 = 0;
-    //Cуммы квадратов
-    sum1Pow = 0;
-    sum2Pow = 0;
-    //сумма произведений
-    sumM = 0;
-    //Получить список фильмов, оцененных обоими
-    srd1 = 0 ;
-    i1 = 0;
-    i2 = 0;
-    srd2 = 0;
-    u1.watched.forEach(film => {
-        if(film.rating){
-            srd1 += film.rating;
-            i1++;
-        }
-    });
-    u2.watched.forEach(film => {
-        if(film.rating){
-            srd2 += film.rating;
-            i2++;
-        }
+// function similarUser2(u1, u2){
+//     //список фильмов, оцененных обоими
+//     const filmsId = []
+//     //Суммы оценок фильмов
+//     sum1 = 0;
+//     sum2 = 0;
+//     //Cуммы квадратов
+//     sum1Pow = 0;
+//     sum2Pow = 0;
+//     //сумма произведений
+//     sumM = 0;
+//     //Получить список фильмов, оцененных обоими
+//     srd1 = 0 ;
+//     i1 = 0;
+//     i2 = 0;
+//     srd2 = 0;
+//     u1.watched.forEach(film => {
+//         if(film.rating){
+//             srd1 += film.rating;
+//             i1++;
+//         }
+//     });
+//     u2.watched.forEach(film => {
+//         if(film.rating){
+//             srd2 += film.rating;
+//             i2++;
+//         }
           
-    });
-    if(i1)
-        srd1 /= i1
-    if(i2)
-        srd2 /= i2    
-    //console.log("srd: ",srd1,srd2);
-    u1.watched.forEach(filmU1 => {
-        isfind = u2.watched.find(filmU2 => {           
-            return (String(filmU1.filmId) == String(filmU2.filmId) && filmU1.rating && filmU2.rating );
-        });
-        //Если фильм найден, то вычислить суммы оценок фильмов, суммы квадратов и сумму произведений
-        if (isfind){
-            filmsId.push(isfind.filmId);   
+//     });
+//     if(i1)
+//         srd1 /= i1
+//     if(i2)
+//         srd2 /= i2    
+//     //console.log("srd: ",srd1,srd2);
+//     u1.watched.forEach(filmU1 => {
+//         isfind = u2.watched.find(filmU2 => {           
+//             return (String(filmU1.filmId) == String(filmU2.filmId) && filmU1.rating && filmU2.rating );
+//         });
+//         //Если фильм найден, то вычислить суммы оценок фильмов, суммы квадратов и сумму произведений
+//         if (isfind){
+//             filmsId.push(isfind.filmId);   
 
-            sum1 += filmU1.rating;
-            sum2 += isfind.rating;
+//             sum1 += filmU1.rating;
+//             sum2 += isfind.rating;
 
-            sum1Pow += (filmU1.rating - srd1)**2;
-            sum2Pow += (isfind.rating - srd2)**2;
+//             sum1Pow += (filmU1.rating - srd1)**2;
+//             sum2Pow += (isfind.rating - srd2)**2;
 
-            sumM += (filmU1.rating - srd1) * (isfind.rating - srd2) ;
-        }      
-    });
-    //Если нет ни одной общей оценки, вернуть 0
-    if(!filmsId.length)
-        return 0;
-    //Вычислить коэффициент Пирсона
-    n = filmsId.length;    
-    denominator = (sum1Pow)**(1/2) * (sum2Pow)**(1/2)
-    if(!denominator)
-        return 0;    
-    return sumM / denominator; 
-}
+//             sumM += (filmU1.rating - srd1) * (isfind.rating - srd2) ;
+//         }      
+//     });
+//     //Если нет ни одной общей оценки, вернуть 0
+//     if(!filmsId.length)
+//         return 0;
+//     //Вычислить коэффициент Пирсона
+//     n = filmsId.length;    
+//     denominator = (sum1Pow)**(1/2) * (sum2Pow)**(1/2)
+//     if(!denominator)
+//         return 0;    
+//     return sumM / denominator; 
+// }
 
-function recommendedFilms (curentUser, allUsers, countBestSimilars, countRecommendedFilms){
-    //матрица "соседей" curentUser  
+// Возвращает список наилучших соответствий для человека из словаря
+// Количество результатов в списке и функция подобия – необязательные параметры.
+function getBestSimilars(curentUser, allUsers, countBestSimilars = 5, similarity = PearsonCorrelationCoefficient){
     similars = [];
     allUsers.forEach(user => {
-        if(user.id != curentUser.id)
-            console.log(user.login+": " +  distCos(curentUser.watched, user.watched)+" "+ similarUser(curentUser, user)+" "+ similarUser2(curentUser, user) )
+        if(user.id != curentUser.id){
+            coefficient = PearsonCorrelationCoefficient(curentUser, user)
+            //Если  коэффициент корреляции значимый
+            if ( coefficient > 0.5) 
+                similars.push({coefficient, user})
+        }
+            
     });
-
-    // заполнение матрицы similars
+    //Вернуть отсортированный список по убыванию оценок 
+    return similars.sort((a, b) => a.coefficient - b.coefficient)
+    .reverse()
+    .slice(0, countBestSimilars);
+}
+function recommendedFilms(curentUser, allUsers, countBestSimilars, countRecommendedFilms, metric = "distCos" ){
+    //матрица "соседей" curentUser  
     allUsers.forEach(user => {
         if(user.id != curentUser.id)
-            similars.push({watched: user.watched, login: user.login, similarity: distCos(curentUser.watched, user.watched)?distCos(curentUser.watched, user.watched):0})
+            console.log(user.login+": " + distCos(curentUser.watched, user.watched)+" "+ PearsonCorrelationCoefficient(curentUser, user))
     });
-    //countBestSimilars наиболее похожих
-    bestSimilars = similars.sort((a, b) => (a.similarity > b.similarity) ? 1 : ((b.similarity > a.similarity) ? -1 : 0))
-                         .reverse()
-                         .slice(0, countBestSimilars);
-    //сумма мер                     
-    similarsSum = 0
-    bestSimilars.forEach(element => {
-        similarsSum += element.similarity
-    });
-    console.log(similars);
+
+    //Список наилучших соответствий
+    bestSimilars = getBestSimilars(curentUser, allUsers, countBestSimilars)
+    console.log(bestSimilars);
+    // //сумма мер                     
+    // similarsSum = 0
+    // bestSimilars.forEach(element => {
+    //     coefficient += element.coefficient
+    // });
     //сумма калиброванных оценок по фильмам
     sum = []    
     bestSimilars.forEach(elem => {
-        elem.watched.forEach(element => {
-            element.rating *= elem.similarity
-            sum[String(element.filmId)] ? sum[String(element.filmId)] += element.rating : sum[String(element.filmId)] = element.rating
-    
+        elem.user.watched.forEach(film => {
+            item = sum[String(film.filmId)]
+            if(item){
+                item.sumRating += film.rating * elem.coefficient
+                item.sumCoefficient += elem.coefficient
+            }
+            else
+                sum[String(film.filmId)] = {
+                    sumRating: film.rating * elem.coefficient, 
+                    sumCoefficient: elem.coefficient
+                }
+
         });        
     });
-    //исключить фильмы которые curentUser смотрел
+    //исключить фильмы которые curentUser смотрел или хочет посмотреть
     curentUser.watched.forEach(element => {
         delete sum[String(element.filmId)]
     });
@@ -163,23 +181,18 @@ function recommendedFilms (curentUser, allUsers, countBestSimilars, countRecomme
     });
 
     recFilms = []
-    for (const key in sum) {
-        if (Object.hasOwnProperty.call(sum, key)) {
-            recFilms.push({filmId: key, value: sum[key]/Math.abs(similarsSum)})       
-        }
-    }
-    recFilms = recFilms.sort( (a, b) => {return a.value - b.value })
-                                        .reverse()
-                                        .slice(0,countRecommendedFilms)
-    console.table(recFilms);
-    filmId = []
-    recFilms.forEach(element => {
-        filmId.push(element.filmId)
-    });
+    for (const key in sum) 
+        if (Object.hasOwnProperty.call(sum, key)) 
+            recFilms.push({
+                filmId: key, 
+                value: sum[key].sumRating/sum[key].sumCoefficient
+            })            
     
-    console.log(filmId );
-    return   filmId;
-
+    recFilms = recFilms.sort((a, b) => a.value - b.value ).reverse().slice(0,countRecommendedFilms)
+    console.table(recFilms);x
+    
+    //console.log(filmId );
+    return   recFilms.map(item => item.filmId);
 }
 class MainController {
     
