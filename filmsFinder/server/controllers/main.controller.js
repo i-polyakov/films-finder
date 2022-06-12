@@ -46,16 +46,19 @@ function similarUser(u1, u2){
             sumM += filmU1.rating * isfind.rating;
         }      
     });
+   
     //Если нет ни одной общей оценки, вернуть 0
-    if(!filmsId.length)
+    if(filmsId.length<5)
         return 0;
     //Вычислить коэффициент Пирсона
     n = filmsId.length;    
     numerator = n * sumM  - sum1 * sum2
     denominator = (n * sum1Pow - sum1**2)**(1/2) * (n * sum2Pow - sum2**2)**(1/2)
     if(!denominator)
-        return 0;    
-    return numerator / denominator; 
+        return 0;  
+    r = numerator/denominator      
+    console.log(r);
+    return n<100?r*(1+(1-r*r)/(2*(n-3))):r; 
 }
 function similarUser2(u1, u2){
     //список фильмов, оцененных обоими
@@ -72,7 +75,7 @@ function similarUser2(u1, u2){
     srd1 = 0 ;
     i1 = 0;
     i2 = 0;
-    srd2 = [];
+    srd2 = 0;
     u1.watched.forEach(film => {
         if(film.rating){
             srd1 += film.rating;
@@ -90,7 +93,7 @@ function similarUser2(u1, u2){
         srd1 /= i1
     if(i2)
         srd2 /= i2    
-    
+    //console.log("srd: ",srd1,srd2);
     u1.watched.forEach(filmU1 => {
         isfind = u2.watched.find(filmU2 => {           
             return (String(filmU1.filmId) == String(filmU2.filmId) && filmU1.rating && filmU2.rating );

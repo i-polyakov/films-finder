@@ -197,94 +197,90 @@ const FilmPage = () => {
 
     }   
     return (            
-        <div class="row main__container">
+        <div className="row main__container">
             <ul className=" wrapper">
-                <li class="col s5 center-align">
-                    <img src={film.image} alt={film.title} class="item__poster "/>
+                <li className="col s5 center-align">
+                    <img src={film.image} alt={film.title} className="item__poster "/>
                     <div className="control">
                         <div className="wrapp__button s5">
                             <button 
-                                class={isWant? ' btn waves-effect waves-light item__want-button active' : 'btn waves-effect waves-light item__want-button'} 
+                                className={isWant? ' btn waves-effect waves-light item__want-button active' : 'btn waves-effect waves-light item__want-button'} 
                                 onClick={handleClickWant}>Посмотрю
                             </button>
                             <button data-target="modal1" 
-                                class={isWatched? 'btn waves-effect waves-light modal-trigger item__watched-button active' : 'btn waves-effect waves-light modal-trigger item__watched-button'}  
+                                className={isWatched? 'btn waves-effect waves-light modal-trigger item__watched-button active' : 'btn waves-effect waves-light modal-trigger item__watched-button'}  
                                 onClick={handleClickWatched} >Просмотрен
                             </button>				
                         </div> 
-                        <div id="modal1" class="modal">
-                            <div class="modal-content">
-                                <form class="col s12" onSubmit={handleClickSubmit}>                                 
-                                    <div class="row">
-                                        <div class="input-field col s12">
-                                        <textarea id="textarea1" class="materialize-textarea"></textarea>
-                                        <label for="textarea1">Отзыв о фильме</label>
+                        <div id="modal1" className="modal">
+                            <div className="modal-content">
+                                <form className="col s12" onSubmit={handleClickSubmit}>                                 
+                                    <div className="row">
+                                        <div className="input-field col s12">
+                                        <textarea id="textarea1" className="materialize-textarea"></textarea>
+                                        <label htmlFor="textarea1">Отзыв о фильме</label>
                                         </div>
                                     </div>
                                     <div className="row radioButtons">
                                         <h5>оценка</h5>
-                                            <div className="col s1 center-align">
-                                                <label for="0"><span>X</span></label>
-                                                <input name="group1" id="0" value="0" type="radio"/>
-                                                <span class ="span-after"></span>
-                                            </div>
-                                            <div className="col s1 center-align">
-                                                <label for="1"><span>1</span></label>
-                                                <input name="group1" id="1" value="1" type="radio" />
-                                                <span class ="span-after"></span>
-                                            </div>
-                                            <div className="col s1 center-align">
-                                                <label for="2"><span>2</span></label>
-                                                <input name="group1" id="2" value="2" type="radio" />
-                                                <span class ="span-after"></span>
-                                            </div>
-                                            <div className="col s1 center-align">
-                                                <label for="3"><span>3</span></label>
-                                                <input name="group1" id="3" value="3" type="radio" />
-                                                <span class ="span-after"></span>
-                                            </div>
-                                            <div className="col s1 center-align">
-                                                <label for="4"><span>4</span></label>
-                                                <input name="group1" id="4" value="4" type="radio" />
-                                                <span class ="span-after"></span>
-                                            </div>
-                                            <div className="col s1 center-align">
-                                                <label for="5"><span>5</span></label>
-                                                <input name="group1" id="5" value="5" type="radio" />
-                                                <span class ="span-after"></span>
-                                            </div>
-                                            <div className="col s1 center-align">
-                                                <label for="6"><span>6</span></label>
-                                                <input name="group1" id="6" value="6" type="radio" />
-                                                <span class ="span-after"></span>
-                                            </div>
-                                            <div className="col s1 center-align">
-                                                <label for="7"><span>7</span></label>
-                                                <input name="group1" id="7" value="7" type="radio" />
-                                                <span class ="span-after"></span>
-                                            </div>
-                                            <div className="col s1 center-align">
-                                                <label for="8"><span>8</span></label>
-                                                <input name="group1" id="8" value="8" type="radio" />
-                                                <span class ="span-after"></span>
-                                            </div>
-                                            <div className="col s1 center-align">
-                                                <label for="9"><span>9</span></label>
-                                                <input name="group1" id="9" value="9" type="radio" />
-                                                <span class ="span-after"></span>
-                                            </div>
-                                            <div className="col s1 center-align">
-                                                <label for="10"><span>10</span></label>
-                                                <input name="group1" id="10" value="10" type="radio" />
-                                                <span class ="span-after"></span>
-                                            </div>
-                                        
+                                        <div className="col s1 center-align">
+                                            <label htmlFor="0"><span>X</span></label>
+                                            <input name="group1" id="0" value="0" type="radio"/>
+                                            <span className ="span-after"></span>
+                                        </div>
+                                        <div className="col s1 center-align">
+                                            <label htmlFor="1"><span>1</span></label>
+                                            <input name="group1" id="1" value="1" type="radio" />
+                                            <span className ="span-after"></span>
+                                        </div>
+                                        <div className="col s1 center-align">
+                                            <label htmlFor="2"><span>2</span></label>
+                                            <input name="group1" id="2" value="2" type="radio" />
+                                            <span className ="span-after"></span>
+                                        </div>
+                                        <div className="col s1 center-align">
+                                            <label htmlFor="3"><span>3</span></label>
+                                            <input name="group1" id="3" value="3" type="radio" />
+                                            <span className ="span-after"></span>
+                                        </div>
+                                        <div className="col s1 center-align">
+                                            <label htmlFor="4"><span>4</span></label>
+                                            <input name="group1" id="4" value="4" type="radio" />
+                                            <span className ="span-after"></span>
+                                        </div>
+                                        <div className="col s1 center-align">
+                                            <label htmlFor="5"><span>5</span></label>
+                                            <input name="group1" id="5" value="5" type="radio" />
+                                            <span className ="span-after"></span>
+                                        </div>
+                                        <div className="col s1 center-align">
+                                            <label htmlFor="6"><span>6</span></label>
+                                            <input name="group1" id="6" value="6" type="radio" />
+                                            <span className ="span-after"></span>
+                                        </div>
+                                        <div className="col s1 center-align">
+                                            <label htmlFor="7"><span>7</span></label>
+                                            <input name="group1" id="7" value="7" type="radio" />
+                                            <span className ="span-after"></span>
+                                        </div>
+                                        <div className="col s1 center-align">
+                                            <label htmlFor="8"><span>8</span></label>
+                                            <input name="group1" id="8" value="8" type="radio" />
+                                            <span className ="span-after"></span>
+                                        </div>
+                                        <div className="col s1 center-align">
+                                            <label htmlFor="9"><span>9</span></label>
+                                            <input name="group1" id="9" value="9" type="radio" />
+                                            <span className ="span-after"></span>
+                                        </div>
+                                        <div className="col s1 center-align">
+                                            <label htmlFor="10"><span>10</span></label>
+                                            <input name="group1" id="10" value="10" type="radio" />
+                                            <span className ="span-after"></span>
+                                        </div>                           
                                     </div>
-                                  
-                                    <div class="modal-footer">
-                                    <input  class="modal-close waves-effect btn-flat submit" type="submit" value="Сохранить"  />
-                                       
-                                               
+                                    <div className="modal-footer">
+                                        <input  className="modal-close waves-effect btn-flat submit" type="submit" value="Сохранить"  />        
                                      </div>
                                 </form>           
                             </div>
@@ -292,26 +288,25 @@ const FilmPage = () => {
                         </div>
                     </div>
                 </li>            
-                <li class="col s7">
-                    <div class="item__about-Film">
-                        <div class="row__title truncate">{film.title} </div>
-                        {/* <div class="row__year">{film.year}</div> */}
+                <li className="col s7">
+                    <div className="item__about-Film">
+                        <div className="row__title truncate">{film.title} </div>
+                        {/* <div className="row__year">{film.year}</div> */}
                     </div>
-                    <table class='info'>                    
+                    <table className='info'>                    
                         <tbody>
                         <tr>
                             <td>Премьера</td>
                             <td>{new Date(film.released).toLocaleDateString( "ru", {year: 'numeric', month: 'long', day: 'numeric' })}</td>  
-                           
                         </tr>                       
                         <tr>
                             <td>Длительность</td> <td>{film?film.runtime:""}</td>             
                         </tr>
                         <tr>
-                            <td>Страна</td> <td>{film.countries?film.countries.join(", "):""}</td>             
+                            <td>Страна</td> <td>{film.countries?film.countries.join(", "):"1"}</td>             
                         </tr>
                         <tr>
-                            <td>Жанр</td> <td>{ genresRu?genresRu.join(", "):""}</td>             
+                            <td>Жанр</td> <td>{ genresRu?genresRu.join(", "):"1"}</td>             
                         </tr>              
                         <tr>
                             <td>Режиссер</td> <td>{film.directors?film.directors.join(", "):""}</td>             
@@ -322,11 +317,9 @@ const FilmPage = () => {
                         <tr>
                             <td>Актеры</td>
                             <td>   
-                              
-                                <div class="actors">
+                                <div className="actors">
                                     {film.actors?film.actors.join(", "):"" }
-                               </div>
-                               
+                               </div>    
                            </td>             
                         </tr>
                         <tr>
@@ -428,31 +421,31 @@ const FilmPage = () => {
 
             </ul>
            
-            {/* <div class="column">
-                <button class="item__watch-button" onclick="changeStatusFilm(this)">Посмотрю</button>
-                <button class="item__viewed-button" onclick="changeStatusFilm(this)">Просмотрен</button>					
+            {/* <div className="column">
+                <button className="item__watch-button" onclick="changeStatusFilm(this)">Посмотрю</button>
+                <button className="item__viewed-button" onclick="changeStatusFilm(this)">Просмотрен</button>					
             </div>
-            <div class="column">
-                <div class="item__rating-section">
-                    <span class="item__rating">
+            <div className="column">
+                <div className="item__rating-section">
+                    <span className="item__rating">
                         <span > <%= (stat.avg==null||stat.avg==0)?'Нет оценки':parseFloat(stat.avg).toFixed(2)%></span>
-                        <span class="item__rating-value">Рейтинг</span>
+                        <span className="item__rating-value">Рейтинг</span>
                     </span>
-                    <span class="item__rating">
+                    <span className="item__rating">
                         <span ><%= stat.watch %></span>
-                        <span class="item__rating-count-watch"> Посмотрят</span>
+                        <span className="item__rating-count-watch"> Посмотрят</span>
                     </span>
-                    <span class="item__rating">
+                    <span className="item__rating">
                         <span ><%= stat.viewed %></span>
-                        <span class="item__rating-count-viewed">Посмотрели</span>
+                        <span className="item__rating-count-viewed">Посмотрели</span>
                     </span>
                 </div>
                 
             </div>
-            <div class="column">	
-                <div class="wrap">
-                    <p class="title">Обзор</p>
-                    <p class="par">
+            <div className="column">	
+                <div className="wrap">
+                    <p className="title">Обзор</p>
+                    <p className="par">
                         <%= film.description %>
                         
                     </p>

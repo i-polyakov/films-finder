@@ -23,11 +23,14 @@ passport.deserializeUser((id, done) => {
 });
 
 passport.use('login', new LocalStrategy(options, (req, login, password, done) => {
-  console.log(req.body)
+  
   // check to see if the username exists
   User.findOne({ login: login }).then(user=>{
     if (user) {   
+     
+      hashPassword(password).then(hash=>console.log(hash))
       bcrypt.compare(password, user.password, (err, result) => {
+       
         if (err) 
           console.error(err);
   

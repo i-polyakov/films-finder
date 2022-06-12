@@ -10,6 +10,7 @@ router.use(AuthenticateController.session());
 
 router.post( "/api/auth/login", function(req, res, next) {
   AuthenticateController.authenticate('login', function(err, user, info) {
+    console.log(err,user);
     if (err) 
       return next(err); 
 

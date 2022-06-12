@@ -16,6 +16,7 @@ import User from "./components/user/user";
 import FilmContextProvider from "./context/film.context";
 import RecContextProvider from "./context/rec.context";
 import SearchContextProvider from "./context/search.context";
+import AboutPage from "./pages/about/about.page";
 import AuthPage from "./pages/auth/auth.page";
 import FilmPage from "./pages/film/film.page";
 import ProfilePage from "./pages/profile/profile.page";
@@ -70,7 +71,7 @@ export const useRoutes = (isLogin, user, setUser) => {
                 />
                 <Route
                   path={url + "/about"}
-                  element={123}
+                  element={<AboutPage/>}
                 />
                  <Route
                   path={"/:login/want"}

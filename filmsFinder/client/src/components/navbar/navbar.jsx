@@ -24,7 +24,7 @@ const Navbar = () => {
     <div className="navbar-fixed">
       <nav>
         <div className="nav-wrapper navbar">
-          <Link href={`${user.login}/about`} onClick = {e=>{e.preventDefault()}} className="left valign-wrapper">
+          <Link to={`${user.login}/about`} className="left valign-wrapper">
             <img
               className="logo"
               src="/icons/logo.svg"
