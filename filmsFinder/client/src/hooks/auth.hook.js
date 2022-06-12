@@ -8,15 +8,12 @@ export const useAuth = () => {
   useEffect(() => {
     console.log("setUser");
   }, [user]);
-  const login = useCallback((session, user) => {
-   
-    setSession(session);
+  const login = useCallback(( user) => {
     setUser(user);
     localStorage.setItem(
       "userData",
       JSON.stringify({
-        user,
-        session,
+        user:user
       })
     );
   }, []);
@@ -27,10 +24,10 @@ export const useAuth = () => {
   };
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("userData"));
-    if (data && data.session) {
-      login(data.session, data.user);
+    if (data && data.user) {
+      login(data.user);
     }
     setIsReady(true);
   }, []);
-  return { login, logout, setUser, session, user, isReady };
+  return { login, logout, setUser, user, isReady };
 };

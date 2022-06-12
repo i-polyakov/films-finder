@@ -8,7 +8,7 @@ export default function Film({ info, isSearch }) {
   return (
     <li class="column">
       <NavLink
-        to={`/film/${isSearch? info.id:info.imdb.id}`}
+        to={`/film/${isSearch? info.id: info.imdb.id}`}
       >
       <div class="column__item">
         <div class="item__about-Film">

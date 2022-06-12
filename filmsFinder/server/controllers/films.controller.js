@@ -113,10 +113,12 @@ class FilmsController {
         console.log(error)
       }       
   }
- 
+
   async getWantFilms(req, res) {
     try {
-      console.log(req.session);
+      //console.log("userrrrrrrrrrrrrrrrrr");
+      //console.log(req.user);
+      //return res.json(req.user);
       const user = await User.findOne({ login: req.params.login }).populate("want")
       if(user)
       return res.json(user.want)

@@ -27,6 +27,8 @@ const AuthPage = () => {
           headers: {
             "Content-Type": "application/json",
           },
+          withCredentials: true
+          
         }
       );
       //console.log(response.data);
@@ -46,10 +48,11 @@ const AuthPage = () => {
           headers: {
             "Content-Type": "application/json",
           },
+          withCredentials: true
         }
       );
-      //console.log(response.data);
-      login(response.data.session, response.data.user);
+      console.log(response);
+      login(response.data);
     } catch (error) {
       console.log(error);
     }

@@ -19,11 +19,11 @@ const RecContainer = (user) => {
         <div class="card horizontal">
           <div class="card-stacked">
             <div class="card-content">
-              <span class="card-title">Рекомендации</span>
-              {!isload ? (
+              <span class="card-title">Нравится пользователям, похожим на вас</span>
+              {!userBased ? (
                 <Collection props={userBased} user={user} />
               ) : (
-                <h3>Ошибка загрузки</h3>
+                <h6>Мало оценок, оцените больше фильмов</h6>
               )}
             </div>
             <hr />

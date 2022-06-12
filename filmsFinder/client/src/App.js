@@ -8,8 +8,8 @@ import { useAuth } from "./hooks/auth.hook.js";
 
 
 function App() {
-  const { login, logout, setUser, session, user, isReady } = useAuth();
-  const isLogin = !!session;
+  const { login, logout, setUser, user, isReady } = useAuth();
+  const isLogin = !!user;
   const routes = useRoutes(isLogin, user);
   useEffect(() => {
     //initialize materialize
@@ -17,7 +17,7 @@ function App() {
   
   return (
     <AuthContext.Provider
-      value={{ login, logout,setUser, session, user, isReady, isLogin }}
+      value={{ login, logout,setUser, user, isReady, isLogin }}
     >
       <BrowserRouter>{routes}</BrowserRouter>
     </AuthContext.Provider>

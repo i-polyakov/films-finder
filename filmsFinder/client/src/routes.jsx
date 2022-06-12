@@ -35,7 +35,7 @@ export const useRoutes = (isLogin, user, setUser) => {
   //let navigate = useNavigate();
 
   //navigate(event.target.action);
-
+console.log("isLogin",isLogin);
   if (isLogin) {
     return (
       <FilmContextProvider>

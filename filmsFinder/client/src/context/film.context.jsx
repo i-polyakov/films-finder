@@ -3,6 +3,7 @@ import axios from "axios";
 import { AuthContext } from "./auth.context";
 export const FilmContext = createContext();
 
+axios.defaults.withCredentials = true
 const FilmContextProvider = (props) => {
  
   const [films, setFilms] = useState([]);
@@ -18,7 +19,8 @@ const FilmContextProvider = (props) => {
         `http://127.0.0.1:8080/api/films${location}`,{    
           headers: {
             "Content-Type": "application/json"
-          }
+          },
+          withCredentials:true
         }
       );
       setFilms(response);

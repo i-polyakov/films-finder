@@ -35,16 +35,19 @@ router.delete("/watched/:id", FilmsController.delWatchedFilm);//удалить �
 //router.post("/checkStatusFilm", checkNotAuthenticated, FilmsController.checkStatusFilm);
 //router.post("/changeStatusFilm", checkNotAuthenticated, FilmsController.changeStatusFilm);
 
-function isAuthenticated(req, res, next) {
+function checkIsAuthenticated(req, res, next) {
   console.log("#####################");
   //req.headers.session.forEach(element => {
-    console.log( req.headers);
-    console.log( req.session);
+    //console.log( req.headers);
+   // console.log( req.session);
   //});
- 
-  if (req.isAuthenticated()) 
+  console.log(req.user);
+  if (req.isAuthenticated()) {
+    console.log("isAuth");
     return next();
-    res.status(401).json("User not logged!")   
+  }
+   
+  res.status(401).json("User not logged!")   
 }
 
 function check(req, res, next) {

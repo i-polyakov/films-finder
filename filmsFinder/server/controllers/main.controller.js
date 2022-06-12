@@ -189,7 +189,7 @@ function recommendedFilms(curentUser, allUsers, countBestSimilars, countRecommen
             })            
     
     recFilms = recFilms.sort((a, b) => a.value - b.value ).reverse().slice(0,countRecommendedFilms)
-    console.table(recFilms);x
+    console.table(recFilms);
     
     //console.log(filmId );
     return   recFilms.map(item => item.filmId);
@@ -203,15 +203,18 @@ class MainController {
         const count  = []
         users.forEach(elem => {
             elem.watched.forEach(element => {
-                if( films[String(element.filmId.id)]){
-                 films[String(element.filmId.id)] += element.rating
-                 count[String(element.filmId.id)] += 1
- 
+                if (element.filmId) {
+                    if( films[String(element.filmId.id)]){
+                        films[String(element.filmId.id)] += element.rating
+                        count[String(element.filmId.id)] += 1
+        
+                       }
+                       else{
+                        films[String(element.filmId.id)] = element.rating
+                        count[String(element.filmId.id )] = 1
+                       }
                 }
-                else{
-                 films[String(element.filmId.id)] = element.rating
-                 count[String(element.filmId.id )] = 1
-                }
+              
             
             });
         });

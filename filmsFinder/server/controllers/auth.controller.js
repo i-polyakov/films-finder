@@ -11,14 +11,21 @@ const options = {
         passReqToCallback : true
     };
 
-
-passport.serializeUser((user, done) => done(null, user._id));
+// // Funtion inside passport which initializes passport
+// router.use(passport.initialize());
+// // Store our variables to be persisted across the whole session. Works with app.use(Session) above
+// router.use(passport.session());
+passport.serializeUser((user, done) => {done(null, user._id)});
 
   // In deserializeUser that key is matched with the in memory array / database or any data resource.
   // The fetched object is attached to the request object as req.user
-passport.deserializeUser((id, done) => {
-  User.findById(id).then( user=>{      
-    return done(null, user)
+passport.deserializeUser((_id, done) => {
+  console.log("_id");
+  console.log(_id);
+  User.findById(_id).then( (err,user)=>{     
+    console.log("findById");
+    console.log(user); 
+    return done(err, user)
   });         
 });
 
@@ -28,7 +35,7 @@ passport.use('login', new LocalStrategy(options, (req, login, password, done) =>
   User.findOne({ login: login }).then(user=>{
     if (user) {   
      
-      hashPassword(password).then(hash=>console.log(hash))
+      //hashPassword(password).then(hash=>console.log(hash))
       bcrypt.compare(password, user.password, (err, result) => {
        
         if (err) 
