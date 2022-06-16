@@ -12,19 +12,19 @@ const RecContainer = (user) => {
   useEffect(() => {
     run(user);
   }, [user]);
-
+  let rec;
+  if(userBased.data && userBased.data.length>0)
+   rec = <Collection props={userBased} user={user} />
+  else
+   rec = <h6>Мало оценок, оцените больше фильмов</h6>
   return (
     <div className="film-container">
       <div class="col s12 m6">
         <div class="card horizontal">
           <div class="card-stacked">
             <div class="card-content">
-              <span class="card-title">Нравится пользователям, похожим на вас</span>
-              {!userBased ? (
-                <Collection props={userBased} user={user} />
-              ) : (
-                <h6>Мало оценок, оцените больше фильмов</h6>
-              )}
+              <span class="card-title">Рекомендации для вас</span>
+              {rec}
             </div>
             <hr />
             <div class="card-content">

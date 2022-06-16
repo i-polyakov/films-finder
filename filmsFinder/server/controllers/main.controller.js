@@ -1,21 +1,6 @@
 const Film = require("../models/film");
 const User = require("../models/user");
 
-//косинусная мера 
-function distCos(fUR, sUR) {//(firstUserRatings, secondUserRatings) dict
-    function dotProduct(fUR, sUR){ //скалярное произведение       
-        d = 0.0;
-        fUR.forEach(elem => {  
-            isfind = sUR.find((item) => {           
-                return String(item.filmId) == String(elem.filmId);
-            });   
-            if (isfind && elem.rating && isfind.rating)
-                d += elem.rating * isfind.rating;                
-        });
-        return d
-    }   
-    return dotProduct (fUR,sUR) / Math.sqrt(dotProduct(fUR,fUR)) / Math.sqrt(dotProduct(sUR,sUR))
-}
 // Возвращает коэффициент корреляции Пирсона между user1 и user2
 function PearsonCorrelationCoefficient(u1, u2){//Pearson correlation coefficient
     //список фильмов, оцененных обоими
@@ -48,7 +33,7 @@ function PearsonCorrelationCoefficient(u1, u2){//Pearson correlation coefficient
     });
    
     //Если нет ни одной общей оценки, вернуть 0
-    if(filmsId.length<5)
+    if(filmsId.length<3)
         return 0;
     //Вычислить коэффициент Пирсона
     n = filmsId.length;    
@@ -60,70 +45,7 @@ function PearsonCorrelationCoefficient(u1, u2){//Pearson correlation coefficient
     console.log(r);
     return n<100?r*(1+(1-r*r)/(2*(n-3))):r; 
 }
-// function similarUser2(u1, u2){
-//     //список фильмов, оцененных обоими
-//     const filmsId = []
-//     //Суммы оценок фильмов
-//     sum1 = 0;
-//     sum2 = 0;
-//     //Cуммы квадратов
-//     sum1Pow = 0;
-//     sum2Pow = 0;
-//     //сумма произведений
-//     sumM = 0;
-//     //Получить список фильмов, оцененных обоими
-//     srd1 = 0 ;
-//     i1 = 0;
-//     i2 = 0;
-//     srd2 = 0;
-//     u1.watched.forEach(film => {
-//         if(film.rating){
-//             srd1 += film.rating;
-//             i1++;
-//         }
-//     });
-//     u2.watched.forEach(film => {
-//         if(film.rating){
-//             srd2 += film.rating;
-//             i2++;
-//         }
-          
-//     });
-//     if(i1)
-//         srd1 /= i1
-//     if(i2)
-//         srd2 /= i2    
-//     //console.log("srd: ",srd1,srd2);
-//     u1.watched.forEach(filmU1 => {
-//         isfind = u2.watched.find(filmU2 => {           
-//             return (String(filmU1.filmId) == String(filmU2.filmId) && filmU1.rating && filmU2.rating );
-//         });
-//         //Если фильм найден, то вычислить суммы оценок фильмов, суммы квадратов и сумму произведений
-//         if (isfind){
-//             filmsId.push(isfind.filmId);   
 
-//             sum1 += filmU1.rating;
-//             sum2 += isfind.rating;
-
-//             sum1Pow += (filmU1.rating - srd1)**2;
-//             sum2Pow += (isfind.rating - srd2)**2;
-
-//             sumM += (filmU1.rating - srd1) * (isfind.rating - srd2) ;
-//         }      
-//     });
-//     //Если нет ни одной общей оценки, вернуть 0
-//     if(!filmsId.length)
-//         return 0;
-//     //Вычислить коэффициент Пирсона
-//     n = filmsId.length;    
-//     denominator = (sum1Pow)**(1/2) * (sum2Pow)**(1/2)
-//     if(!denominator)
-//         return 0;    
-//     return sumM / denominator; 
-// }
-
-// Возвращает список наилучших соответствий для человека из словаря
-// Количество результатов в списке и функция подобия – необязательные параметры.
 function getBestSimilars(curentUser, allUsers, countBestSimilars = 5, similarity = PearsonCorrelationCoefficient){
     similars = [];
     allUsers.forEach(user => {
@@ -141,20 +63,10 @@ function getBestSimilars(curentUser, allUsers, countBestSimilars = 5, similarity
     .slice(0, countBestSimilars);
 }
 function recommendedFilms(curentUser, allUsers, countBestSimilars, countRecommendedFilms, metric = "distCos" ){
-    //матрица "соседей" curentUser  
-    allUsers.forEach(user => {
-        if(user.id != curentUser.id)
-            console.log(user.login+": " + distCos(curentUser.watched, user.watched)+" "+ PearsonCorrelationCoefficient(curentUser, user))
-    });
-
+  
     //Список наилучших соответствий
     bestSimilars = getBestSimilars(curentUser, allUsers, countBestSimilars)
     console.log(bestSimilars);
-    // //сумма мер                     
-    // similarsSum = 0
-    // bestSimilars.forEach(element => {
-    //     coefficient += element.coefficient
-    // });
     //сумма калиброванных оценок по фильмам
     sum = []    
     bestSimilars.forEach(elem => {
@@ -191,7 +103,7 @@ function recommendedFilms(curentUser, allUsers, countBestSimilars, countRecommen
     recFilms = recFilms.sort((a, b) => a.value - b.value ).reverse().slice(0,countRecommendedFilms)
     console.table(recFilms);
     
-    //console.log(filmId );
+    
     return   recFilms.map(item => item.filmId);
 }
 class MainController {
@@ -232,7 +144,7 @@ class MainController {
         });  
         console.log(topFilmsId);      
         const top = await Film.find({ '_id': {$in: topFilmsId}})
-        //console.log(top)
+     
         return res.json(top)
         } catch (error) {
             console.log(error);
@@ -254,9 +166,9 @@ class MainController {
             });
             console.table(table)
             const recommendation =  recommendedFilms(curentUser, allUsers, 4, 3)
-            //console.log(curentUser);
+      
             const films = await Film.find({ '_id': {$in: recommendation}})
-            //console.log(films)
+   
             return res.json(films)
           } catch (error) {
             console.log(error);

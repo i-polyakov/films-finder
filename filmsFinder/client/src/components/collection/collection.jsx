@@ -7,7 +7,7 @@ function Collection({ props, isSearch }) {
   let films;
   if (results && results.length > 0) {
     films = results.map((film) => {
-      console.log(film);
+      //console.log(film);
       
        return <Film info={film} isSearch={isSearch} />;
     });

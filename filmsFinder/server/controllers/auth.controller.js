@@ -11,10 +11,6 @@ const options = {
         passReqToCallback : true
     };
 
-// // Funtion inside passport which initializes passport
-// router.use(passport.initialize());
-// // Store our variables to be persisted across the whole session. Works with app.use(Session) above
-// router.use(passport.session());
 passport.serializeUser((user, done) => {done(null, user._id)});
 
   // In deserializeUser that key is matched with the in memory array / database or any data resource.

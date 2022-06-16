@@ -13,6 +13,7 @@ const RecContextProvider = (props) => {
         "http://127.0.0.1:8080/api/main/recommendation/userBased",
         { user: user.user }
       );
+      console.log(response.data);
       setUserBasedRecFilms(response);
       setIsLoad(false);
       const res = await axios.get("http://127.0.0.1:8080/api/main/topFilms/10");
